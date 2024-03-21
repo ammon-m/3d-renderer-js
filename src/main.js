@@ -1,4 +1,4 @@
-import * as Math3d from "./lib/Math3d.js";
+import * as Math3d from "./lib/Math3d.ts";
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
@@ -22,3 +22,8 @@ document.addEventListener("resize", event => {
     View.width = canvas.width
     View.height = canvas.height
 })
+
+let v1 = new Math3d.Vector3(1, 5, 2)
+let v2 = new Math3d.Vector3(3, 4, 7)
+
+console.log(v1 + v2)
