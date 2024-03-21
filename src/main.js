@@ -15,7 +15,7 @@ canvas.height = window.innerHeight - View.padding * 2
 View.width = canvas.width
 View.height = canvas.height
 
-window.addEventListener("resize", event => {
+document.addEventListener("resize", event => {
     canvas.width = window.innerWidth - View.padding * 2
     canvas.height = window.innerHeight - View.padding * 2
 
