@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>gaem</title>
+        <!--<link href="/style.css" rel="stylesheet" type="text/css" media="all">-->
+        <style>
+            body {
+                margin: 0;
+            }
+            html {
+                background-color: black;
+            }
+            .holder {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                image-rendering: crisp-edges;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="holder"><canvas id="canvas" width="1032" height="553"></canvas></div>
+        <script src="./src/main.js"></script>
+    </body>
+</html>
