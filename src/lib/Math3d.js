@@ -24,7 +24,7 @@ export class Vector3
      * @overload
      * @param {number} x x, y, and z value.
      */
-    constructor(x:number, y:number = null, z:number = null)
+    constructor(x, y = null, z = null)
     {
         this.x = x
         this.z = (z === null ? (y === null ? x : y) : z)
@@ -105,52 +105,52 @@ export class Vector3
     /**
      * @overload
      * @description Returns the sum of two Vectors.
-     * @param v2 Second Vector.
+     * @param {Vector3} v2 Second Vector.
      */
-    add(v2:Vector3) {
+    add(v2) {
         return new Vector3(this.x + v2.x, this.y + v2.y, this.z + v2.z)
     }
 
     /**
      * @overload
      * @description Returns this vector with `value` added
-     * @param value Value
+     * @param {number} value Value
      */
-    add(value:number) {
+    add(value) {
         return new Vector3(this.x + value, this.y + value, this.z + value)
     }
 
     /**
      * @overload
      * @description Returns the difference of two Vectors.
-     * @param v2 Second Vector.
+     * @param {Vector3} v2 Second Vector.
      */
-    sub(v2:Vector3) {
+    sub(v2) {
         return new Vector3(this.x - v2.x, this.y - v2.y, this.z - v2.z)
     }
 
     /**
      * @overload
      * @description Returns this vector with `value` subtracted
-     * @param value Value
+     * @param {number} value Value
      */
-    sub(value:number) {
+    sub(value) {
         return new Vector3(this.x - value, this.y - value, this.z - value)
     }
 
     /**
      * @description Returns this vector muliplied by `value` 
-     * @param value Value
+     * @param {number} value Value
      */
-    mul(value:number) {
+    mul(value) {
         return new Vector3(this.x * value, this.y * value, this.z * value)
     }
 
     /**
      * @description Returns this vector divided by `value` 
-     * @param value Value
+     * @param {number} value Value
      */
-    div(value:number) {
+    div(value) {
         return new Vector3(this.x / value, this.y / value, this.z / value)
     }
 
@@ -158,16 +158,8 @@ export class Vector3
      * @description Returns the dot product of two Vectors.
      * @param {Vector3} v2 Second Vector.
      */
-    dot(v2:Vector3) {
+    dot(v2) {
         return this.x * v2.x + this.y * v2.y + this.z * v2.z
-    }
-
-    /**
-     * @description Returns the cross product of two Vectors.
-     * @param {Vector3} v2 Second Vector.
-     */
-    cross(v2:Vector3) {
-        return this.magnitude * v2.magnitude
     }
 
     /**
