@@ -21,7 +21,7 @@ document.addEventListener("resize", event => {
 
     View.width = canvas.width
     View.height = canvas.height
-})
+}, true)
 
 let v1 = new Math3d.Vector3(1, 5, 2)
 let v2 = new Math3d.Vector3(3, 4, 7)
