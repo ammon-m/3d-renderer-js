@@ -1,4 +1,4 @@
-import * as Math3d from "./lib/Math3d.ts";
+import * as Math3d from "./lib/Math3d.js";
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
