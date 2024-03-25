@@ -1,18 +1,30 @@
-export function radToDeg(radians: number)
+export function radToDeg(radians)
 {
-    return radians * (180/Math.PI);
+    return Number(radians) * (180/Math.PI);
 }
-export function degToRad(degrees: number)
+export function degToRad(degrees)
 {
-    return degrees / (180/Math.PI);
+    return Number(degrees) / (180/Math.PI);
 }
 
 export class Vector3
 {
     /**
      * An object that represents a 3D position in space.
+     * 
+     * @overload
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * 
+     * @overload
+     * @param {number} x
+     * @param {number} y
+     * 
+     * @overload
+     * @param {number} x
      */
-    constructor(x: number, y: number, z: number) {
+    constructor(x, y, z) {
         this.x = x;
         this.y = y === undefined ? x : y;
         this.z = z === undefined ? (y === undefined ? x : 0) : z;
@@ -21,42 +33,46 @@ export class Vector3
     /**
      * Shorthand for (0, 0, 0)
      */
-    static readonly zero = new Vector3(0, 0, 0)
+    static zero = Object.freeze(new Vector3(0, 0, 0))
 
     /**
      * Shorthand for (0, 1, 0)
      */
-    static readonly up = new Vector3(0, 1, 0)
+    static up = Object.freeze(new Vector3(0, 1, 0))
 
     /**
      * Shorthand for (0, -1, 0)
      */
-    static readonly down = new Vector3(0, -1, 0)
+    static down = Object.freeze(new Vector3(0, -1, 0))
 
     /**
      * Shorthand for (1, 0, 0)
      */
-    static readonly right = new Vector3(1, 0, 0)
+    static right = Object.freeze(new Vector3(1, 0, 0))
 
     /**
      * Shorthand for (-1, 0, 0)
      */
-    static readonly left = new Vector3(-1, 0, 0)
+    static left = Object.freeze(new Vector3(-1, 0, 0))
 
     /**
      * Shorthand for (0, 0, 1)
      */
-    static readonly forward = new Vector3(0, 0, 1)
+    static forward = Object.freeze(new Vector3(0, 0, 1))
 
     /**
      * Shorthand for (0, 0, -1)
      */
-    static readonly backward = new Vector3(0, 0, -1)
+    static backward = Object.freeze(new Vector3(0, 0, -1))
 
     /**
      * Returns the sum of two Vectors or a Vector and a number.
+     * @overload
+     * @param {number} value
+     * @overload
+     * @param {Vector3} value
      */
-    add(value: Vector3 | number) {
+    add(value) {
         if(value instanceof Vector3)
             return new Vector3(this.x + value.x, this.y + value.y, this.z + value.z)
         else if(typeof value === "number")
@@ -67,8 +83,12 @@ export class Vector3
 
     /**
      * Returns the difference of two Vectors or a Vector and a number.
+     * @overload
+     * @param {number} value
+     * @overload
+     * @param {Vector3} value
      */
-    sub(value: Vector3 | number) {
+    sub(value) {
         if(value instanceof Vector3)
             return new Vector3(this.x - value.x, this.y - value.y, this.z - value.z)
         else if(typeof value === "number")
@@ -79,22 +99,25 @@ export class Vector3
 
     /**
      * Returns the product of a Vector and value.
+     * @param {number} value
      */
-    mul(value: number) {
+    mul(value) {
         return new Vector3(this.x * value, this.y * value, this.z * value)
     }
 
     /**
      * Returns the quotient of a Vector and value.
+     * @param {number} value
      */
-    div(value: number) {
+    div(value) {
         return new Vector3(this.x / value, this.y / value, this.z / value)
     }
 
     /**
      * Returns the dot product of two Vectors.
+     * @param {Vector3} value
      */
-    dot(value: Vector3) {
+    dot(value) {
         return this.x * value.x + this.y * value.y + this.z * value.z
     }
 
@@ -107,14 +130,15 @@ export class Vector3
 
     /**
      * Returns the distance between two vectors.
+     * @param {Vector3} vec1
+     * @param {Vector3} vec2
      */
-    static distance(vec1: Vector3, vec2: Vector3) {
-        return vec1.add(vec2.reversed()).magnitude
+    static distance(vec1, vec2) {
+        return vec1.add(vec2.reversed).magnitude
     }
 
     /**
      * Length of the Vector.
-     * @type {number}
      */
     get magnitude() {
         return Math.sqrt(this.dot(this, this))
@@ -143,7 +167,7 @@ export class Vector3
     /**
      * Returns a copy of the Vector with the transformation `(x, y, z) => (-x, -y, -z)`
      */
-    reversed() {
+    get reversed() {
         return new Vector3(-this.x, -this.y, -this.z)
     }
 
