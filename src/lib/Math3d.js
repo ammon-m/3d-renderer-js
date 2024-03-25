@@ -33,37 +33,37 @@ export class Vector3
     /**
      * Shorthand for (0, 0, 0)
      */
-    static zero = Object.freeze(new Vector3(0, 0, 0))
+    static get zero() {return new Vector3(0, 0, 0)}
 
     /**
      * Shorthand for (0, 1, 0)
      */
-    static up = Object.freeze(new Vector3(0, 1, 0))
+    static get up() {return new Vector3(0, 1, 0)}
 
     /**
      * Shorthand for (0, -1, 0)
      */
-    static down = Object.freeze(new Vector3(0, -1, 0))
+    static get down() {return new Vector3(0, -1, 0)}
 
     /**
      * Shorthand for (1, 0, 0)
      */
-    static right = Object.freeze(new Vector3(1, 0, 0))
+    static get right() {return new Vector3(1, 0, 0)}
 
     /**
      * Shorthand for (-1, 0, 0)
      */
-    static left = Object.freeze(new Vector3(-1, 0, 0))
+    static get left() {return new Vector3(-1, 0, 0)}
 
     /**
      * Shorthand for (0, 0, 1)
      */
-    static forward = Object.freeze(new Vector3(0, 0, 1))
+    static get forward() {return new Vector3(0, 0, 0)}
 
     /**
      * Shorthand for (0, 0, -1)
      */
-    static backward = Object.freeze(new Vector3(0, 0, -1))
+    static get backward() {return new Vector3(0, 0, 0)}
 
     /**
      * Returns the sum of two Vectors or a Vector and a number.
@@ -142,12 +142,6 @@ export class Vector3
      */
     get magnitude() {
         return Math.sqrt(this.dot(this, this))
-    }
-    set magnitude(val) {
-        var n = this.normalized
-        this.x = n.x * val
-        this.y = n.y * val
-        this.z = n.z * val
     }
 
     /**
