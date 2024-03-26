@@ -36,6 +36,13 @@ export class Vector3
     static get zero() {return new Vector3(0, 0, 0)}
 
     /**
+     * Shorthand for (1, 1, 1)
+     * 
+     * it is NOT normalized; the length is the square root of 3
+     */
+    static get one() {return new Vector3(0, 0, 0)}
+
+    /**
      * Shorthand for (0, 1, 0)
      */
     static get up() {return new Vector3(0, 1, 0)}
@@ -184,5 +191,98 @@ export class Vector3
         this.x /= l
         this.y /= l
         this.z /= l
+    }
+}
+
+export class Matrix
+{
+    _array = Object.preventExtensions([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+
+    static Build({position = Vector3.zero, rotation = Vector3.zero, scale = Vector3.one})
+    {
+        // initialize with identity matrix
+        const matrix = Matrix.identity, scaleMat = Matrix.identity, posMat = Matrix.identity
+        scaleMat._array = Object.preventExtensions([
+            [scale.x, 0, 0, 0],
+            [0, scale.y, 0, 0],
+            [0, 0, scale.z, 0],
+            [0, 0, 0, 1]
+        ])
+        posMat._array = Object.preventExtensions([
+            [1, 0, 0, position.x],
+            [0, 1, 0, position.y],
+            [0, 0, 1, position.z],
+            [0, 0, 0, 1]
+        ])
+
+        const rotx = Matrix.identity, roty = Matrix.identity, rotz = Matrix.identity
+        rotx._array = Object.preventExtensions([
+            [1, 0, 0, 0],
+            [0,  Math.acos(rotation.x), Math.asin(rotation.x), 0],
+            [0, -Math.asin(rotation.x), Math.acos(rotation.x), 0],
+            [0, 0, 0, 1]
+        ])
+        roty._array = Object.preventExtensions([
+            [Math.acos(rotation.y), 0, -Math.asin(rotation.y), 0],
+            [0, 1, 0, 0],
+            [Math.asin(rotation.y), 0,  Math.acos(rotation.y), 0],
+            [0, 0, 0, 1]
+        ])
+        rotz._array = Object.preventExtensions([
+            [Math.acos(rotation.z), -Math.asin(rotation.z), 0, 0],
+            [Math.asin(rotation.z),  Math.acos(rotation.z), 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
+
+        return Matrix.multiply(posMat, Matrix.multiply(scaleMat, Matrix.multiply(rotz, Matrix.multiply(rotx, Matrix.multiply(roty, matrix)))))
+    }
+
+    get height()
+    {
+        return this._array.length
+    }
+    get width()
+    {
+        return this._array[0].length
+    }
+
+    static get identity()
+    {
+        return new Matrix()
+    }
+
+    static multiply(matrixA, matrixB)
+    {
+        const newMatrix = Matrix.identity
+        const arr = newMatrix._array
+        const a = matrixA._array
+        const b = matrixB._array
+        for(var i = 0; i < 4; i++)
+        {
+            for(var j = 0; j < 4; j++)
+            {
+                arr[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j] + a[i][2] * b[2][j] + a[i][3] * b[3][j]
+            }
+        }
+        return newMatrix;
+    }
+
+    /**
+     * 
+     * @param {Matrix} matrix 
+     * @param {number[]} column 
+     * @returns 
+     */
+    static multiplyToColumn(matrix, column)
+    {
+        const arr = [0, 0, 0, 0]
+        const a = matrix._array
+        const b = column
+        for(var i = 0; i < 4; i++)
+        {
+            arr[i] = (a[i][0] * b[0] + a[i][1] * b[1] + a[i][2] * b[2] + a[i][3] * b[3])
+        }
+        return arr;
     }
 }

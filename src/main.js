@@ -1,5 +1,7 @@
+import { Mesh, Vertex } from "./lib/Engine.js";
 import * as Math3d from "./lib/Math3d.js";
 import { Vector3 } from "./lib/Math3d.js";
+import { Renderer } from "./lib/Renderer.js"
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
@@ -24,7 +26,12 @@ window.addEventListener("resize", event => {
     View.height = canvas.height
 }, true)
 
-let v1 = new Vector3(1, 5, 2)
-let v2 = new Vector3(3, 4, 7)
+const renderer = new Renderer()
 
-console.log(v1.add(v2))
+renderer.render(ctx, [
+    new Mesh([
+        new Vertex(new Vector3(0, 0, 0)),
+        new Vertex(new Vector3(1, 0, 0)),
+        new Vertex(new Vector3(1, 1, 0))
+    ])
+])
