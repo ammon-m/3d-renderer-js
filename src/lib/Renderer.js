@@ -13,6 +13,7 @@ export class Renderer
 
     drawMesh(ctx, mesh)
     {
+        ctx.fillStyle = '#ff0000'
         const path = ctx.beginPath()
 
         for(var i = 0; i < mesh.vertices.length; i++)
@@ -34,8 +35,6 @@ export class Renderer
         }
 
         ctx.closePath()
-
-        ctx.fillStyle = '#ff0000'
         ctx.fill(path)
     }
 }
