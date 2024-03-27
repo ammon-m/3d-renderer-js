@@ -29,7 +29,7 @@ export class Renderer
             mat._array[3][3] = 0
 
             const position = Matrix.multiplyToColumn(
-                Matrix.multiply(mat, new Transform({position: pos}).toMatrix4x4()),
+                Matrix.multiply(mesh.transform.toMatrix4x4(), new Transform({position: pos}).toMatrix4x4()),
                 [pos.x, pos.y, pos.z, 1]
             )
 
@@ -38,7 +38,7 @@ export class Renderer
             ctx.lineTo(position.x, position.y)
         }
 
-        ctx.closePath()
         ctx.fill()
+        ctx.closePath()
     }
 }
