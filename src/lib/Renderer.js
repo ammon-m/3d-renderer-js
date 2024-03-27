@@ -24,7 +24,7 @@ export class Renderer
             mat._array[3][3] = 0
 
             const position = Matrix.multiplyToColumn(
-                Matrix.multiply(mat, Matrix.multiply(mesh.transform.toMatrix4x4(), new Transform({position: pos}).toMatrix4x4())),
+                Matrix.multiply(mat, mesh.transform.toMatrix4x4()),
                 [pos.x, pos.y, pos.z, 1]
             )
 

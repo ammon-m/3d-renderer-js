@@ -5,6 +5,7 @@ import { Renderer } from "./lib/Renderer.js";
 export function main(canvas)
 {
     const ctx = canvas.getContext("2d")
+    console.log(ctx)
 
     const View = {
         padding: 4,
