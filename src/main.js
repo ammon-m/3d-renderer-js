@@ -2,7 +2,7 @@ import { Mesh, Transform, Vertex } from "./lib/Engine.js";
 import { Vector3 } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js";
 
-function main(canvas)
+export function main(canvas)
 {
     const ctx = canvas.getContext("2d")
 

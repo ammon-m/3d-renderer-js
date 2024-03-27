@@ -20,10 +20,14 @@
     </head>
     <body>
         <div class="holder"><canvas id="canvas" width="1032" height="553"></canvas></div>
-        <script src="./src/main.js" type="module"></script>
-        <script>
-            const canvas = document.getElementById("canvas")
-            console.log("main executed with return code " + main(canvas))
+        <script type="module">
+            import { main } from "./src/main.js"
+
+            document.addEventListener("DOMContentLoaded", event => {
+                const canvas = document.getElementById("canvas")
+                const resultCode = main(canvas)
+                console.log("main executed with return code " + resultCode)
+            })
         </script>
     </body>
 </html>
