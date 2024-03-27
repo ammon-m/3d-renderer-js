@@ -29,9 +29,9 @@ export class Renderer
             )
 
             if(i == 0)
-                ctx.moveTo(position.x, position.y)
+                ctx.moveTo(position[0], position[1])
 
-            ctx.lineTo(position.x, position.y)
+            ctx.lineTo(position[0], position[1])
         }
 
         ctx.closePath()
