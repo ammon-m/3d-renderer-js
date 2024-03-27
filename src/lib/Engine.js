@@ -1,4 +1,4 @@
-import { Vector3, Matrix } from "./Math3d";
+import { Vector3, Matrix } from "./Math3d.js";
 
 export class Transform
 {
@@ -18,7 +18,8 @@ export class Transform
 
     toMatrix4x4()
     {
-        return Matrix.Build({position: this.position, rotation: this.rotation, scale: this.scale})
+        const m = Matrix.Build({position: this.position, rotation: this.rotation, scale: this.scale})
+        return m
     }
 }
 
@@ -52,9 +53,10 @@ export class Vertex
 
 export class Mesh
 {
-    constructor(vertices, color = "#ffffff")
+    constructor(vertices, transform, color = "#ffffff")
     {
         this.vertices = vertices
+        this.transform = transform
         this.color = color
     }
 }

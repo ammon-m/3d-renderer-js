@@ -1,5 +1,5 @@
-import { Matrix } from "./Math3d"
-import { Mesh, Transform } from "./Engine"
+import { Matrix } from "./Math3d.js"
+import { Mesh, Transform } from "./Engine.js"
 
 export class Renderer
 {

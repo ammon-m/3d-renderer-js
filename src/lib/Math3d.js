@@ -198,10 +198,21 @@ export class Matrix
 {
     _array = Object.preventExtensions([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
 
+    constructor(array)
+    {
+        if(array !== undefined && array.length == 4)
+        {
+            if(typeof array[0] === "object" && array[0].length == 4)
+            {
+                this._array = Object.preventExtensions(array)
+            }
+        }
+    }
+
     static Build({position = Vector3.zero, rotation = Vector3.zero, scale = Vector3.one})
     {
         // initialize with identity matrix
-        const matrix = Matrix.identity, scaleMat = Matrix.identity, posMat = Matrix.identity
+        const scaleMat = Matrix.identity, posMat = Matrix.identity
         scaleMat._array = Object.preventExtensions([
             [scale.x, 0, 0, 0],
             [0, scale.y, 0, 0],
@@ -235,7 +246,9 @@ export class Matrix
             [0, 0, 0, 1]
         ])
 
-        return Matrix.multiply(posMat, Matrix.multiply(scaleMat, Matrix.multiply(rotz, Matrix.multiply(rotx, Matrix.multiply(roty, matrix)))))
+        const mat = Matrix.multiply(Matrix.multiply(rotz, Matrix.multiply(rotx, Matrix.multiply(roty, Matrix.identity)), scaleMat), posMat)
+        console.log(mat.toString())
+        return mat
     }
 
     get height()
@@ -249,7 +262,12 @@ export class Matrix
 
     static get identity()
     {
-        return new Matrix()
+        return new Matrix([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
     }
 
     static multiply(matrixA, matrixB)
@@ -269,7 +287,6 @@ export class Matrix
     }
 
     /**
-     * 
      * @param {Matrix} matrix 
      * @param {number[]} column 
      * @returns 
@@ -283,6 +300,17 @@ export class Matrix
         {
             arr[i] = (a[i][0] * b[0] + a[i][1] * b[1] + a[i][2] * b[2] + a[i][3] * b[3])
         }
+        console.log(arr.join(" "))
         return arr;
+    }
+
+    toString()
+    {
+        return (
+            `${this._array[0][0]} ${this._array[0][1]} ${this._array[0][2]} ${this._array[0][3]}` + "\n" +
+            `${this._array[1][0]} ${this._array[1][1]} ${this._array[1][2]} ${this._array[1][3]}` + "\n" +
+            `${this._array[2][0]} ${this._array[2][1]} ${this._array[2][2]} ${this._array[2][3]}` + "\n" +
+            `${this._array[3][0]} ${this._array[3][1]} ${this._array[3][2]} ${this._array[3][3]}`
+        )
     }
 }

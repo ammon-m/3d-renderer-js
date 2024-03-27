@@ -1,4 +1,4 @@
-import { Mesh, Vertex } from "./lib/Engine.js";
+import { Mesh, Transform, Vertex } from "./lib/Engine.js";
 import * as Math3d from "./lib/Math3d.js";
 import { Vector3 } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js"
@@ -29,9 +29,12 @@ window.addEventListener("resize", event => {
 const renderer = new Renderer()
 
 renderer.render(ctx, [
-    new Mesh([
-        new Vertex(new Vector3(0, 0, 0)),
-        new Vertex(new Vector3(1, 0, 0)),
-        new Vertex(new Vector3(1, 1, 0))
-    ])
+    new Mesh(
+        [
+            new Vertex(new Vector3(0, 0, 2)),
+            new Vertex(new Vector3(1, 0, 2)),
+            new Vertex(new Vector3(1, 1, 2))
+        ],
+        new Transform({})
+    )
 ])
