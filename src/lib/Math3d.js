@@ -298,7 +298,7 @@ export class Matrix
         const b = column
         for(var i = 0; i < 4; i++)
         {
-            arr[i] = (a[i][0] * b[0] + a[i][1] * b[1] + a[i][2] * b[2] + a[i][3] * b[3])
+            arr[i] = (a[i][0] * b[i] + a[i][1] * b[i] + a[i][2] * b[i] + a[i][3] * b[i])
         }
         console.log(arr.join(" "))
         return arr;
