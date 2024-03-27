@@ -18,7 +18,7 @@ export class Renderer
 
     drawMesh(ctx, mesh)
     {
-        ctx.fillStyle = mesh.color
+        ctx.fillStyle = '#ff0000'
         ctx.beginPath()
 
         for(var i = 0; i < mesh.vertices.length; i++)
@@ -29,16 +29,17 @@ export class Renderer
             mat._array[3][3] = 0
 
             const position = Matrix.multiplyToColumn(
-                Matrix.multiply(mesh.transform.toMatrix4x4(), new Transform({position: pos}).toMatrix4x4()),
+                Matrix.multiply(mat, Matrix.multiply(mesh.transform.toMatrix4x4(), new Transform({position: pos}).toMatrix4x4())),
                 [pos.x, pos.y, pos.z, 1]
             )
 
             if(i == 0)
                 ctx.moveTo(position.x, position.y)
+
             ctx.lineTo(position.x, position.y)
         }
 
-        ctx.fill()
         ctx.closePath()
+        ctx.fill()
     }
 }
