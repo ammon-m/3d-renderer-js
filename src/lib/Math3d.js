@@ -227,21 +227,32 @@ export class Matrix
         ])
 
         const rotx = Matrix.identity, roty = Matrix.identity, rotz = Matrix.identity
+
+        const rx = degToRad(rotation.x), ry = degToRad(rotation.y), rz = degToRad(rotation.z);
+        const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx), cz = Math.cos(rz), sz = Math.sin(rz);
+
+        const rotMat = new Matrix([
+            [cy*cz + sy*sx*sz, sy*sx*cz - cy*sz, sy*cx, 0],
+            [      cx*sz,            cx*cz,       -sx,  0],
+            [cy*sx*sz - cz*sy, cy*sx*cz + sy*sz, cy*cx, 0],
+            [        0,                0,          0,   1]
+        ])
+
         rotx._array = Object.preventExtensions([
             [1, 0, 0, 0],
-            [0,  Math.acos(rotation.x), Math.asin(rotation.x), 0],
-            [0, -Math.asin(rotation.x), Math.acos(rotation.x), 0],
+            [0,  Math.cos(rx), Math.sin(rx), 0],
+            [0, -Math.sin(rx), Math.cos(rx), 0],
             [0, 0, 0, 1]
         ])
         roty._array = Object.preventExtensions([
-            [Math.acos(rotation.y), 0, -Math.asin(rotation.y), 0],
+            [Math.cos(ry), 0, -Math.sin(ry), 0],
             [0, 1, 0, 0],
-            [Math.asin(rotation.y), 0,  Math.acos(rotation.y), 0],
+            [Math.sin(ry), 0,  Math.cos(ry), 0],
             [0, 0, 0, 1]
         ])
         rotz._array = Object.preventExtensions([
-            [Math.acos(rotation.z), -Math.asin(rotation.z), 0, 0],
-            [Math.asin(rotation.z),  Math.acos(rotation.z), 0, 0],
+            [Math.cos(rz), -Math.sin(rz), 0, 0],
+            [Math.sin(rz),  Math.cos(rz), 0, 0],
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
