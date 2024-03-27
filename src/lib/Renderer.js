@@ -1,13 +1,8 @@
-import { Matrix } from "./Math3d.js"
 import { Mesh, Transform } from "./Engine.js"
+import { Matrix } from "./Math3d.js"
 
 export class Renderer
 {
-    constructor()
-    {
-        
-    }
-
     render(ctx, objects = [])
     {
         for(var i = 0; i < objects.length; i++)

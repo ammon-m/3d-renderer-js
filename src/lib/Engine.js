@@ -1,4 +1,4 @@
-import { Vector3, Matrix } from "./Math3d.js";
+import { Matrix, Vector3 } from "./Math3d.js";
 
 export class Transform
 {
