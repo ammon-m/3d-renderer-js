@@ -4,6 +4,7 @@ import { Vector3 } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js";
 
 export let ticker = null
+export let drawTicker = null
 
 export const renderer = new Renderer()
 
@@ -36,6 +37,8 @@ export function main(canvas)
 
     clearInterval(ticker)
     ticker = null
+    clearInterval(drawTicker)
+    drawTicker = null
 
     canvas.height = Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16)
     canvas.width = canvas.height * 16/9
@@ -136,7 +139,7 @@ export function update()
 
     cameraTransform.position.add(cameraVelocity)
 
-    for(key in Keyboard)
+    for(let key in Keyboard)
     {
         Keyboard[key].pressed = 0
         Keyboard[key].released = 0
