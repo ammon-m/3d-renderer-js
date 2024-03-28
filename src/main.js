@@ -28,12 +28,21 @@ const Keyboard = {
 
 let ctx = null
 
+const cameraTransform = new Transform({
+    position: Vector3.zero,
+    rotation: Vector3.zero,
+    scale: Vector3.one
+})
+const cameraVelocity = Vector3.zero
+
 /**
 * @param {HTMLCanvasElement} canvas
 */
 export function main(canvas)
 {
     ctx = canvas.getContext("2d")
+
+    console.log(cameraTransform.toMatrix().toString())
 
     clearInterval(ticker)
     ticker = null
@@ -118,13 +127,6 @@ const sceneObjects = [
         })
     )
 ]
-
-const cameraTransform = new Transform({
-    position: Vector3.zero,
-    rotation: Vector3.zero,
-    scale: Vector3.one
-})
-const cameraVelocity = Vector3.zero
 
 export function update()
 {
