@@ -226,8 +226,6 @@ export class Matrix
             [0, 0, 0, 1]
         ])
 
-        const rotx = Matrix.identity, roty = Matrix.identity, rotz = Matrix.identity
-
         const rx = degToRad(rotation.x), ry = degToRad(rotation.y), rz = degToRad(rotation.z);
         const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx), cz = Math.cos(rz), sz = Math.sin(rz);
 
@@ -238,27 +236,7 @@ export class Matrix
             [        0,                0,          0,   1]
         ])
 
-        rotx._array = Object.preventExtensions([
-            [1, 0, 0, 0],
-            [0,  Math.cos(rx), Math.sin(rx), 0],
-            [0, -Math.sin(rx), Math.cos(rx), 0],
-            [0, 0, 0, 1]
-        ])
-        roty._array = Object.preventExtensions([
-            [Math.cos(ry), 0, -Math.sin(ry), 0],
-            [0, 1, 0, 0],
-            [Math.sin(ry), 0,  Math.cos(ry), 0],
-            [0, 0, 0, 1]
-        ])
-        rotz._array = Object.preventExtensions([
-            [Math.cos(rz), -Math.sin(rz), 0, 0],
-            [Math.sin(rz),  Math.cos(rz), 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ])
-
-        const mat = Matrix.multiply(Matrix.multiply(rotz, Matrix.multiply(rotx, Matrix.multiply(roty, Matrix.identity)), scaleMat), posMat)
-        console.log(mat.toString())
+        const mat = Matrix.multiply(posMat, Matrix.multiply(rotMat, scaleMat))
         return mat
     }
 
@@ -309,19 +287,35 @@ export class Matrix
         const b = column
         for(var i = 0; i < 4; i++)
         {
-            arr[i] = (a[i][0] * b[i] + a[i][1] * b[i] + a[i][2] * b[i] + a[i][3] * b[i])
+            arr[i] = (a[i][0] * b[0] + a[i][1] * b[1] + a[i][2] * b[2] + a[i][3] * b[3])
         }
-        console.log(arr.join(" "))
         return arr;
     }
 
-    toString()
+    toString(s = " ")
     {
         return (
-            `${this._array[0][0]} ${this._array[0][1]} ${this._array[0][2]} ${this._array[0][3]}` + "\n" +
-            `${this._array[1][0]} ${this._array[1][1]} ${this._array[1][2]} ${this._array[1][3]}` + "\n" +
-            `${this._array[2][0]} ${this._array[2][1]} ${this._array[2][2]} ${this._array[2][3]}` + "\n" +
-            `${this._array[3][0]} ${this._array[3][1]} ${this._array[3][2]} ${this._array[3][3]}`
+            `${this._array[0][0]}${s}${this._array[0][1]}${s}${this._array[0][2]}${s}${this._array[0][3]}` + "\n" +
+            `${this._array[1][0]}${s}${this._array[1][1]}${s}${this._array[1][2]}${s}${this._array[1][3]}` + "\n" +
+            `${this._array[2][0]}${s}${this._array[2][1]}${s}${this._array[2][2]}${s}${this._array[2][3]}` + "\n" +
+            `${this._array[3][0]}${s}${this._array[3][1]}${s}${this._array[3][2]}${s}${this._array[3][3]}`
         )
     }
+
+    get m11() {return this._array[0][0]} set m11(x) {this._array[0][0] = x}
+    get m12() {return this._array[0][1]} set m12(x) {this._array[0][1] = x}
+    get m13() {return this._array[0][2]} set m13(x) {this._array[0][2] = x}
+    get m14() {return this._array[0][3]} set m14(x) {this._array[0][3] = x}
+    get m21() {return this._array[1][0]} set m21(x) {this._array[1][0] = x}
+    get m22() {return this._array[1][1]} set m22(x) {this._array[1][1] = x}
+    get m23() {return this._array[1][2]} set m23(x) {this._array[1][2] = x}
+    get m24() {return this._array[1][3]} set m24(x) {this._array[1][3] = x}
+    get m31() {return this._array[2][0]} set m31(x) {this._array[2][0] = x}
+    get m32() {return this._array[2][1]} set m32(x) {this._array[2][1] = x}
+    get m33() {return this._array[2][2]} set m33(x) {this._array[2][2] = x}
+    get m34() {return this._array[2][3]} set m34(x) {this._array[2][3] = x}
+    get m41() {return this._array[3][0]} set m41(x) {this._array[3][0] = x}
+    get m42() {return this._array[3][1]} set m42(x) {this._array[3][1] = x}
+    get m43() {return this._array[3][2]} set m43(x) {this._array[3][2] = x}
+    get m44() {return this._array[3][3]} set m44(x) {this._array[3][3] = x}
 }
