@@ -1,4 +1,4 @@
-import { Matrix, Vector3 } from "./Math3d.js";
+import { Matrix, Vector2, Vector3 } from "./Math3d.js";
 
 export class Transform
 {
@@ -45,14 +45,23 @@ export function FixedArray()
 
 export class Vertex
 {
+    position = Vector3.zero
+    screenPosition = Vector2.zero
+
     constructor(position)
     {
         this.position = position
+        this.screenPosition = new Vector2(position.x, position.y)
     }
 }
 
 export class Mesh
 {
+    /**
+     * @param {Vertex[]} vertices 
+     * @param {Transform} transform 
+     * @param {string} color 
+     */
     constructor(vertices, transform, color = "#ffffff")
     {
         this.vertices = vertices

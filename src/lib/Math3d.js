@@ -45,12 +45,12 @@ export class Vector3
     /**
      * Shorthand for (0, 1, 0)
      */
-    static get up() {return new Vector3(0, 1, 0)}
+    static get down() {return new Vector3(0, 1, 0)}
 
     /**
      * Shorthand for (0, -1, 0)
      */
-    static get down() {return new Vector3(0, -1, 0)}
+    static get up() {return new Vector3(0, -1, 0)}
 
     /**
      * Shorthand for (1, 0, 0)
@@ -99,7 +99,7 @@ export class Vector3
         if(value instanceof Vector3)
             return new Vector3(this.x - value.x, this.y - value.y, this.z - value.z)
         else if(typeof value === "number")
-            return new Vector3(this.x + value, this.y + value, this.z + value)
+            return new Vector3(this.x - value, this.y - value, this.z - value)
         else
             throw new TypeError(`Cannot parse operands of 'Vector3' and '${typeof value}'`)
     }
@@ -191,6 +191,14 @@ export class Vector3
         this.x /= l
         this.y /= l
         this.z /= l
+    }
+
+    /**
+     * @param {Vector3} vector
+     */
+    equals(vector)
+    {
+        return (this.x == vector.x && this.y == vector.y && this.z == vector.z)
     }
 }
 
@@ -318,4 +326,234 @@ export class Matrix
     get m42() {return this._array[3][1]} set m42(x) {this._array[3][1] = x}
     get m43() {return this._array[3][2]} set m43(x) {this._array[3][2] = x}
     get m44() {return this._array[3][3]} set m44(x) {this._array[3][3] = x}
+}
+
+export class Vector2
+{
+    /**
+     * An object that represents a 2D position in space.
+     * 
+     * @overload
+     * @param {number} x x value.
+     * @param {number} y y value.
+     * @returns {Vector2} (x, y)
+     * 
+     * @overload
+     * @param {number} x x and y value.
+     * @returns {Vector2} (x, x)
+     */
+    constructor(x = 0, y = null)
+    {
+        this.x = x
+        this.y = (y === null ? x : y)
+    }
+
+    /**
+     * Creates a Vector with a length and an angle.
+     * 
+     * @param {number} len magnitude of Vector.
+     * @param {number} dir direction of Vector.
+     */
+    static fromLen(len, dir) {
+        return new Vector2(Math.cos(degToRad(dir)) * len, Math.sin(degToRad(dir)) * len)
+    }
+
+    /**
+     * Shorthand for (0, 0)
+     */
+    static get zero() {
+        return new Vector2(0, 0)
+    }
+    /**
+     * Shorthand for (1, 1)
+     */
+    static get one() {
+        return new Vector2(1, 1)
+    }
+    /**
+     * Shorthand for (1, 0)
+     */
+    static get right() {
+        return new Vector2(1, 0)
+    }
+    /**
+     * Shorthand for (-1, 0)
+     */
+    static get left() {
+        return new Vector2(-1, 0)
+    }
+    /**
+     * Shorthand for (0, 1)
+     */
+    static get down() {
+        return new Vector2(0, 1)
+    }
+    /**
+     * Shorthand for (0, -1)
+     */
+    static get up() {
+        return new Vector2(0, -1)
+    }
+
+    /**
+     * Returns the sum of two Vectors or a Vector and a number.
+     * @overload
+     * @param {number} value
+     * @overload
+     * @param {Vector2} value
+     */
+    add(value) {
+        if(value instanceof Vector2)
+            return new Vector2(this.x + value.x, this.y + value.y)
+        else if(typeof value === "number")
+            return new Vector2(this.x + value, this.y + value)
+        else
+            throw new TypeError(`Cannot parse operands of 'Vector2' and '${typeof value}'`)
+    }
+
+    /**
+     * Returns the difference of two Vectors or a Vector and a number.
+     * @overload
+     * @param {number} value
+     * @overload
+     * @param {Vector2} value
+     */
+    sub(value) {
+        if(value instanceof Vector2)
+            return new Vector2(this.x - value.x, this.y - value.y)
+        else if(typeof value === "number")
+            return new Vector2(this.x - value, this.y - value)
+        else
+            throw new TypeError(`Cannot parse operands of 'Vector2' and '${typeof value}'`)
+    }
+
+    /**
+     * Returns the product of a Vector and value.
+     * @param {number} value
+     */
+    mul(value) {
+        return new Vector2(this.x * value, this.y * value)
+    }
+
+    /**
+     * Returns the quotient of a Vector and value.
+     * @param {number} value
+     */
+    div(value) {
+        return new Vector2(this.x / value, this.y / value)
+    }
+
+    /**
+     * Returns the dot product of two Vectors.
+     * @param {Vector2} v Value
+     * @returns {number}
+     */
+    dot(v) {
+        return this.x * v.x + this.y * v.y
+    }
+
+    /**
+     * Returns a perfect clone of a Vector.
+     */
+    clone() {
+        return new Vector2(this.x, this.y)
+    }
+
+    /**
+     * Returns a new Vector with a length that is clamped between the min and max.
+     * @param {Vector2} v The vector to be clamped.
+     * @param {number} min Minimum length.
+     * @param {number} max Maximum length.
+     * @returns {Vector2}
+     */
+    static clampLength(v, min, max) {
+        var r = Vector2.clone(v)
+        var _min = Math.min(min, max)
+        var _max = Math.max(min, max)
+        var l = Math.min(Math.max(r.magnitude, _min), _max) / r.magnitude
+        return new Vector2(v.x * l, v.y * l)
+    }
+
+    /**
+     * Returns the distance between two vectors.
+     * @param {Vector2} v1 First position.
+     * @param {Vector2} v2 Second position.
+     * @returns {number}
+     */
+    static distance(v1, v2) {
+        return v1.add(v2.reversed).magnitude
+    }
+
+    /**
+     * Returns the angle pointing from one vector to another.
+     * @param {Vector2} v1 First position.
+     * @param {Vector2} v2 Second position.
+     * @returns {number}
+     */
+    static direction(v1, v2) {
+        return v1.add(v2.reversed).angle
+    }
+
+    /**
+     * Length of the Vector.
+     * @type {number}
+     */
+    get magnitude() {
+        return Math.sqrt(this.x*this.x + this.y*this.y)
+    }
+    set magnitude(val) {
+        var n = this.normalized
+        this.x = n.x * val
+        this.y = n.y * val
+    }
+
+    /**
+     * Direction (in degrees) of the Vector.
+     * @type {number}
+     */
+    get angle() {
+        return radToDeg(Math.atan(this.y / this.x))
+    }
+    set angle(val) {
+        const mag = this.magnitude
+        this.x = Math.cos(degToRad(val)) * mag
+        this.y = Math.sin(degToRad(val)) * mag
+    }
+
+    /**
+     * @returns {"(x, y)"}
+     */
+    toString() {
+        return `(${this.x}, ${this.y})`
+    }
+
+    /**
+     * @returns {[x, y]}
+     */
+    toArray() {
+        return [this.x, this.y]
+    }
+
+    /**
+     * Returns a copy of the Vector with the following transformation applied: (x, y) => (-x, -y)
+     */
+    get reversed() {
+        return new Vector2(-this.x, -this.y)
+    }
+
+    /**
+     * Returns a copy of the Vector with a length of 1.
+     */
+    get normalized() {
+        var l = this.magnitude
+        return new Vector2(this.x / l, this.y / l)
+    }
+
+    /**
+     * @param {Vector2} vector
+     */
+    equals(vector)
+    {
+        return (this.x == vector.x && this.y == vector.y)
+    }
 }

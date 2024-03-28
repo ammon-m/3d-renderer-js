@@ -52,6 +52,7 @@ export class Renderer
         for(var i = 0; i < mesh.vertices.length; i++)
         {
             const pos = mesh.vertices[i].position
+            const cpos = mesh.vertices[i].screenPosition
             const mat = Matrix.identity
             mat._array[3][3] = 0
             mat._array[2][3] = 1
@@ -65,20 +66,23 @@ export class Renderer
 
             let w = 120/Math.max(position[2] * 90/360, 0.01)
 
-            if(i == 0)
-                ctx.moveTo(position[0] * w, position[1] * w)
+            cpos.x = position[0] * w
+            cpos.y = position[1] * w
 
-            ctx.lineTo(position[0] * w, position[1] * w)
+            if(i == 0)
+                ctx.moveTo(cpos.x, cpos.y)
+
+            ctx.lineTo(cpos.x, cpos.y)
 
             ctx.fillStyle = "#111111"
             ctx.fill()
 
             ctx.fillStyle = `rgb(
-                ${Math.min(255, (position[0] * w + ctx.canvas.width/2)/ctx.canvas.width * 255)},
-                ${Math.min(255, (position[1] * w + ctx.canvas.height/2)/ctx.canvas.width * 255)},
+                ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
+                ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
                 ${Math.min(255, 100/w * 255)}
             )`
-            ctx.fillRect(position[0] * w - 4, position[1] * w - 4, 8, 8)
+            ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
         }
 
         ctx.closePath()
