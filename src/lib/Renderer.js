@@ -53,7 +53,7 @@ export class Renderer
             const position = Matrix.multiplyToColumn(
                 Matrix.multiply(mat,
                     Matrix.multiply(this.cameraMatrix,
-                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix4x4()))),
+                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))),
                 [pos.x, pos.y, pos.z, 1]
             )
 
