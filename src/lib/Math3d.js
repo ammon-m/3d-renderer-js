@@ -7,8 +7,47 @@ export function degToRad(degrees)
     return Number(degrees) / (180/Math.PI);
 }
 
+/**
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ */
+export function clamp(value, min, max)
+{
+    return Math.min(Math.max(value, min), max)
+}
+
+/**
+ * @template T
+ * @param {number} n
+ * @param {(i:number) => T} expr
+ * 
+ * @returns {T}
+ */
+export function summate(n, expr)
+{
+    let sum = undefined
+    for(var i = 0; i < n; i++)
+    {
+        if(i == 0)
+            sum = expr(i)
+        else
+            sum += expr(i)
+    }
+    return sum
+}
+
+export function mod(x, n)
+{
+    return ((x % n) + n) % n
+}
+
 export class Vector3
 {
+    x = 0
+    y = 0
+    z = 0
+
     /**
      * An object that represents a 3D position in space.
      * 
@@ -257,6 +296,13 @@ export class Matrix
         return this._array[0].length
     }
 
+    trace(wh = 4)
+    {
+        return summate(clamp(wh, 1, 4), i => {
+            return this._array[i][i]
+        })
+    }
+
     static get identity()
     {
         return new Matrix([
@@ -330,6 +376,9 @@ export class Matrix
 
 export class Vector2
 {
+    x = 0
+    y = 0
+
     /**
      * An object that represents a 2D position in space.
      * 

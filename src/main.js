@@ -1,6 +1,6 @@
 import { Mesh, Transform, Vertex } from "./lib/Engine.js";
 import { KeyboardListener } from "./lib/Input.js";
-import { Vector3 } from "./lib/Math3d.js";
+import { Vector2, Vector3, clamp } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js";
 
 export let ticker = null
@@ -9,6 +9,7 @@ export let drawTicker = null
 export const renderer = new Renderer()
 
 let mouseLocked = false
+let mouseSensitivity = 0.2
 
 const View = {
     padding: 4,
@@ -34,6 +35,7 @@ const cameraTransform = new Transform({
     scale: new Vector3(1, 1, 1)
 })
 const cameraVelocity = Vector3.zero
+let cameraPitch = 0
 
 /**
 * @param {HTMLCanvasElement} canvas
@@ -67,8 +69,21 @@ export function main(canvas)
         ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
     }, true)
 
+    window.addEventListener("mousemove", event => {
+        if(!mouseLocked)
+            return;
+
+        const delta = new Vector2(event.movementX, event.movementY)
+
+        cameraPitch += delta.y * mouseSensitivity
+        cameraPitch = clamp(cameraPitch, -90, 90)
+
+        cameraTransform.Rotate(Vector3.right.mul(cameraPitch))
+        cameraTransform.Rotate(Vector3.up.mul(delta.x * mouseSensitivity))
+    })
+
     canvas.addEventListener("click", event => {
-        mouseLocked = true
+        mouseLocked = !mouseLocked
         event.preventDefault();
     }, true)
 
