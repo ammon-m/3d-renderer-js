@@ -9,7 +9,7 @@ export let drawTicker = null
 export const renderer = new Renderer()
 
 let mouseLocked = false
-let mouseSensitivity = 0.2
+let mouseSensitivity = 0.1
 
 const View = {
     padding: 4,
@@ -44,8 +44,6 @@ export function main(canvas)
 {
     ctx = canvas.getContext("2d")
 
-    console.log(cameraTransform.toMatrix().toString())
-
     clearInterval(ticker)
     ticker = null
     clearInterval(drawTicker)
@@ -75,11 +73,11 @@ export function main(canvas)
 
         const delta = new Vector2(event.movementX, event.movementY)
 
-        cameraPitch += delta.y * mouseSensitivity
+        cameraPitch -= delta.y * mouseSensitivity
         cameraPitch = clamp(cameraPitch, -90, 90)
 
-        cameraTransform.Rotate(Vector3.right.mul(cameraPitch))
-        cameraTransform.Rotate(Vector3.up.mul(delta.x * mouseSensitivity))
+        cameraTransform.rotation.y = cameraPitch
+        cameraTransform.Rotate(Vector3.down.mul(delta.x * mouseSensitivity))
     })
 
     canvas.addEventListener("click", event => {
