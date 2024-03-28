@@ -119,7 +119,11 @@ const sceneObjects = [
     )
 ]
 
-const cameraTransform = new Transform({})
+const cameraTransform = new Transform({
+    position: Vector3.zero,
+    rotation: Vector3.zero,
+    scale: Vector3.one
+})
 const cameraVelocity = Vector3.zero
 
 export function update()
