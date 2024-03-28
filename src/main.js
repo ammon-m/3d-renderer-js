@@ -1,4 +1,5 @@
 import { Mesh, Transform, Vertex } from "./lib/Engine.js";
+import { KeyboardListener } from "./lib/Input.js";
 import { Vector3 } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js";
 
@@ -6,10 +7,22 @@ export let ticker = null
 
 export const renderer = new Renderer()
 
+let mouseLocked = false
+
 const View = {
     padding: 4,
     width: 0,
     height: 0
+}
+
+const Keyboard = {
+    space: new KeyboardListener(32),
+    // z: new KeyboardListener(90),
+    // x: new KeyboardListener(88),
+    w: new KeyboardListener(87),
+    a: new KeyboardListener(65),
+    s: new KeyboardListener(83),
+    d: new KeyboardListener(68),
 }
 
 let ctx = null
@@ -42,7 +55,13 @@ export function main(canvas)
         ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
     }, true)
 
-    ticker = setInterval(tick, 1/60 * 1000)
+    canvas.addEventListener("click", event => {
+        mouseLocked = true
+        event.preventDefault();
+    }, true)
+
+    ticker = setInterval(update, 1/60 * 1000) // 1/60s = ~16.67ms
+    drawTicker = setInterval(draw, 10/1000) // supposedly chrome's limit is 10ms
 
     return 1
 }
@@ -97,20 +116,41 @@ const sceneObjects = [
     )
 ]
 
-export function tick()
+const cameraTransform = new Transform({})
+const cameraVelocity = Vector3.zero
+
+export function update()
 {
     _resetCtx()
 
     const cubeFaces = [sceneObjects[0], sceneObjects[1], sceneObjects[2]]
 
-    cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime * Math.PI) / 120)
-    cubeFaces[0].transform.position.y = 0.5 + Math.sin((elapsedTime * Math.PI) / 120)
-    cubeFaces[1].transform.position.x = 0.5 + Math.cos((elapsedTime * Math.PI) / 120)
-    cubeFaces[1].transform.position.y = 0.5 + Math.sin((elapsedTime * Math.PI) / 120)
-    cubeFaces[2].transform.position.x = 0.5 + Math.cos((elapsedTime * Math.PI) / 120)
-    cubeFaces[2].transform.position.y = 0.5 + Math.sin((elapsedTime * Math.PI) / 120)
+    cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    cubeFaces[0].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
 
-    renderer.render(ctx, sceneObjects)
+    cubeFaces[1].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    cubeFaces[1].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
+
+    cubeFaces[2].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    cubeFaces[2].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
+
+    cameraTransform.position.add(cameraVelocity)
+
+    for(key in Keyboard)
+    {
+        Keyboard[key].pressed = 0
+        Keyboard[key].released = 0
+    }
 
     elapsedTime++
+}
+
+export function draw()
+{
+    /**
+     * @TODO finish this
+     */
+    renderer.setCameraMatrix(cameraTransform.toMatrix())
+
+    renderer.render(ctx, sceneObjects)
 }

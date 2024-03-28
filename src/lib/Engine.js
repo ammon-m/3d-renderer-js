@@ -16,7 +16,7 @@ export class Transform
         this.scale = scale
     }
 
-    toMatrix4x4()
+    toMatrix()
     {
         const m = Matrix.Build({position: this.position, rotation: this.rotation, scale: this.scale})
         return m
