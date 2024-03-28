@@ -9,7 +9,7 @@ export let drawTicker = null
 export const renderer = new Renderer()
 
 let mouseLocked = false
-let mouseSensitivity = 0.1
+let mouseSensitivity = 0.15
 
 const View = {
     padding: 4,
@@ -74,7 +74,7 @@ export function main(canvas)
 
         const delta = new Vector2(event.movementX, event.movementY)
 
-        cameraPitch -= delta.y * mouseSensitivity
+        cameraPitch += delta.y * mouseSensitivity
         cameraPitch = clamp(cameraPitch, -90, 90)
 
         cameraTransform.rotation.x = cameraPitch
