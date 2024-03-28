@@ -25,6 +25,9 @@
         <script type="module">
             import { main } from "./src/main.js"
 
+            const motd = "motd"
+            console.log(motd)
+
             document.addEventListener("DOMContentLoaded", event => {
                 const canvas = document.getElementById("canvas")
                 const resultCode = main(canvas)
