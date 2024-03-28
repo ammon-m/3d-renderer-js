@@ -31,7 +31,7 @@ let ctx = null
 const cameraTransform = new Transform({
     position: Vector3.zero,
     rotation: Vector3.zero,
-    scale: Vector3.one
+    scale: new Vector3(1, 1, 1)
 })
 const cameraVelocity = Vector3.zero
 
@@ -130,8 +130,6 @@ const sceneObjects = [
 
 export function update()
 {
-    _resetCtx()
-
     const cubeFaces = [sceneObjects[0], sceneObjects[1], sceneObjects[2]]
 
     cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
@@ -145,13 +143,6 @@ export function update()
 
     cameraTransform.position.add(cameraVelocity)
 
-    /**
-     * @TODO finish this
-     */
-    renderer.setCameraMatrix(cameraTransform.toMatrix())
-
-    renderer.render(ctx, sceneObjects)
-
     for(let key in Keyboard)
     {
         Keyboard[key].pressed = 0
@@ -163,4 +154,12 @@ export function update()
 
 export function draw()
 {
+    _resetCtx()
+
+    /**
+     * @TODO finish this
+     */
+    renderer.setCameraMatrix(cameraTransform.toMatrix())
+
+    renderer.render(ctx, sceneObjects)
 }

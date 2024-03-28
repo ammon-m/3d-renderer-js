@@ -6,6 +6,12 @@ export class Renderer
     worldMatrix = Matrix.identity
     cameraMatrix = Matrix.identity
 
+    constructor()
+    {
+        this.worldMatrix = Matrix.identity
+        this.cameraMatrix = Matrix.identity
+    }
+
     /**
      * @param {CanvasRenderingContext2D} ctx
      * @param {Mesh[]} objects
@@ -62,6 +68,8 @@ export class Renderer
             if(i == 0)
                 ctx.moveTo(position[0] * w, position[1] * w)
 
+            ctx.lineTo(position[0] * w, position[1] * w)
+
             ctx.fillStyle = "#111111"
             ctx.fill()
 
@@ -71,8 +79,6 @@ export class Renderer
                 ${Math.min(255, 100/w * 255)}
             )`
             ctx.fillRect(position[0] * w - 4, position[1] * w - 4, 8, 8)
-
-            ctx.lineTo(position[0] * w, position[1] * w)
         }
 
         ctx.closePath()
@@ -80,5 +86,3 @@ export class Renderer
         ctx.fillStyle = col
     }
 }
-
-export const ViewMatrix = Matrix.identity
