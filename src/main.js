@@ -143,6 +143,13 @@ export function update()
 
     cameraTransform.position.add(cameraVelocity)
 
+    /**
+     * @TODO finish this
+     */
+    renderer.setCameraMatrix(cameraTransform.toMatrix())
+
+    renderer.render(ctx, sceneObjects)
+
     for(let key in Keyboard)
     {
         Keyboard[key].pressed = 0
@@ -154,10 +161,4 @@ export function update()
 
 export function draw()
 {
-    /**
-     * @TODO finish this
-     */
-    renderer.setCameraMatrix(cameraTransform.toMatrix())
-
-    renderer.render(ctx, sceneObjects)
 }
