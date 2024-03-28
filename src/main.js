@@ -36,6 +36,7 @@ const cameraTransform = new Transform({
 })
 const cameraVelocity = Vector3.zero
 let cameraPitch = 0
+let cameraYaw = 0
 
 /**
 * @param {HTMLCanvasElement} canvas
@@ -76,8 +77,8 @@ export function main(canvas)
         cameraPitch -= delta.y * mouseSensitivity
         cameraPitch = clamp(cameraPitch, -90, 90)
 
-        cameraTransform.rotation.y = cameraPitch
-        cameraTransform.Rotate(Vector3.down.mul(delta.x * mouseSensitivity))
+        cameraTransform.rotation.x = cameraPitch
+        cameraTransform.Rotate(Vector3.up.mul(delta.x * mouseSensitivity))
     })
 
     canvas.addEventListener("click", event => {
