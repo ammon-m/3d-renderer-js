@@ -274,13 +274,13 @@ export class Matrix
         ])
 
         const rx = degToRad(rotation.x), ry = degToRad(rotation.y), rz = degToRad(rotation.z);
-        const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx), cz = Math.cos(rz), sz = Math.sin(rz);
+        const cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry), cz = Math.cos(rz), sz = Math.sin(rz);
 
         const rotMat = new Matrix([
-            [cy*cz + sy*sx*sz, sy*sx*cz - cy*sz, sy*cx, 0],
-            [      cx*sz,            cx*cz,       -sx,  0],
-            [cy*sx*sz - cz*sy, cy*sx*cz + sy*sz, cy*cx, 0],
-            [        0,                0,          0,   1]
+            [      cy*cz,           -cy*sz,        sy,   0],
+            [cx*sz + cz*sx*sy, cx*cz - sx*sy*sz, -cy*sx, 0],
+            [sx*sz - cx*cz*sy, cz*sy + cx*sy*sz,  cx*cy, 0],
+            [        0,                0,           0,   1]
         ])
 
         const mat = Matrix.multiply(posMat, Matrix.multiply(scaleMat, rotMat))
