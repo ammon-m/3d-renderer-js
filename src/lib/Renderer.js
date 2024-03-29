@@ -55,7 +55,7 @@ export class Renderer
             const cpos = mesh.vertices[i].screenPosition
             const mat = Matrix.identity
             mat._array[3][3] = 0
-            mat._array[2][3] = 1
+            mat._array[3][2] = 1
 
             const position = Matrix.multiplyToColumn(
                 Matrix.multiply(mat,
