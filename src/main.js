@@ -170,13 +170,7 @@ export function draw()
 {
     _resetCtx()
 
-    const rotMat = new Transform({
-        position: cameraTransform.position,
-        rotation: cameraTransform.rotation,
-        scale: Vector3.one
-    }).toMatrix()
-
-    renderer.setCameraMatrix(rotMat)
+    renderer.setCameraTransform(cameraTransform)
 
     renderer.render(ctx, sceneObjects)
 }

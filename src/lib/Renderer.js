@@ -4,12 +4,12 @@ import { Matrix, Vector3, degToRad } from "./Math3d.js"
 export class Renderer
 {
     worldMatrix = Matrix.identity
-    cameraMatrix = Matrix.identity
+    cameraTransform = new Transform({})
 
     constructor()
     {
         this.worldMatrix = Matrix.identity
-        this.cameraMatrix = Matrix.identity
+        this.cameraTransform = new Transform({})
     }
 
     /**
@@ -33,11 +33,11 @@ export class Renderer
     }
 
     /**
-     * @param {Matrix} matrix 
+     * @param {Transform} transform 
      */
-    setCameraMatrix(matrix)
+    setCameraTransform(transform)
     {
-        this.cameraMatrix = matrix
+        this.cameraTransform = transform
     }
 
     /**
@@ -57,7 +57,10 @@ export class Renderer
             mat._array[3][3] = 0
             mat._array[3][2] = 1
 
-            const matrix = Matrix.multiply(mat, Matrix.multiply(this.cameraMatrix, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())))
+            const viewRotMat = new Transform({rotation: this.cameraTransform.rotation}).toMatrix()
+            const viewPosMat = new Transform({position: this.cameraTransform.position.reversed}).toMatrix()
+
+            const matrix = Matrix.multiply(mat, Matrix.multiply(viewRotMat, Matrix.multiply(viewPosMat, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))))
 
             const position = Matrix.multiplyToColumn(matrix, [pos.x, pos.y, pos.z, 1])
 
