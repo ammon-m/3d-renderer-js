@@ -74,11 +74,11 @@ export function main(canvas)
 
         const delta = new Vector2(event.movementX, event.movementY)
 
-        cameraPitch += delta.y * mouseSensitivity
+        cameraPitch -= delta.y * mouseSensitivity
         cameraPitch = clamp(cameraPitch, -90, 90)
 
         cameraTransform.rotation.x = cameraPitch
-        cameraTransform.Rotate(Vector3.up.mul(delta.x * mouseSensitivity))
+        cameraTransform.Rotate(Vector3.down.mul(delta.x * mouseSensitivity))
     })
 
     canvas.addEventListener("click", event => {
