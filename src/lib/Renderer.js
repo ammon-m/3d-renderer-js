@@ -57,12 +57,13 @@ export class Renderer
             mat._array[3][3] = 0
             mat._array[3][2] = 1
 
-            const position = Matrix.multiplyToColumn(
-                Matrix.multiply(mat,
-                    Matrix.multiply(this.cameraMatrix,
-                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))),
-                [pos.x, pos.y, pos.z, 1]
+            const matrix = Matrix.multiply(
+                Matrix.multiply(this.cameraMatrix,
+                    Matrix.multiply(mat,
+                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())))
             )
+
+            const position = Matrix.multiplyToColumn(matrix, [pos.x, pos.y, pos.z, 1])
 
             let w = 120/Math.max(position[3] * 90/360, 0.01)
 
