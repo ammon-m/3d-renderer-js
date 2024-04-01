@@ -64,7 +64,7 @@ export class Renderer
                 [pos.x, pos.y, pos.z, 1]
             )
 
-            let w = 120/Math.max(position[2] * 90/360, 0.01)
+            let w = 120/Math.max(position[3] * 90/360, 0.01)
 
             cpos.x = position[0] * w
             cpos.y = position[1] * w
