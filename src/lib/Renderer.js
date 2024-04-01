@@ -60,7 +60,7 @@ export class Renderer
             const viewRotMat = new Transform({rotation: this.cameraTransform.rotation}).toMatrix()
             const viewPosMat = new Transform({position: this.cameraTransform.position.reversed}).toMatrix()
 
-            const matrix = Matrix.multiply(mat, Matrix.multiply(viewRotMat, Matrix.multiply(viewPosMat, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))))
+            const matrix = Matrix.multiply(viewRotMat, Matrix.multiply(mat, Matrix.multiply(viewPosMat, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))))
 
             const position = Matrix.multiplyToColumn(matrix, [pos.x, pos.y, pos.z, 1])
 
