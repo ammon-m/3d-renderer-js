@@ -74,8 +74,8 @@ export class Renderer
         ])
 
         const viewMat = Matrix.Build({
-            position: this.cameraTransform.position.reversed,
-            rotation: this.cameraTransform.rotation.reversed,
+            position: this.cameraTransform.position,
+            rotation: this.cameraTransform.rotation,
             scale: Vector3.one
         })
 
