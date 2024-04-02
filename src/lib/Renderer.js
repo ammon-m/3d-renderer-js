@@ -76,23 +76,20 @@ export class Renderer
 
         const fov = Math.tan(degToRad(90)/2)
 
-        const w = ctx.canvas.width / 2
-        const h = ctx.canvas.height / 2
-
         const orthoProjectionMatrix = new Matrix([ // tsym x2
-                [w/(16/9 * fov),   0,          0,          0      ],
-                [      0,        h/fov,        0,          0      ],
-                [      0,          0,      1/(f2-n2), -n2/(f2-n2) ],
+                [1/(16/9 * fov),   0,          0,          0      ],
+                [      0,        1/fov,        0,          0      ],
+                [      0,          0,       1/(f-n),   -n/(f-n)   ],
                 [      0,          0,          0,          1      ]
         ])
 
-        // const perspectiveProjectionMatrix = Matrix.multiply(orthoProjectionMatrix, perspectiveMatrix)
-        const perspectiveProjectionMatrix = orthoProjectionMatrix
+        const perspectiveProjectionMatrix = Matrix.multiply(orthoProjectionMatrix, perspectiveMatrix)
+        // const perspectiveProjectionMatrix = orthoProjectionMatrix
 
         const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).toMatrix()
         const viewPosMat = new Transform({rotation: this.cameraTransform.position.reversed}).toMatrix()
 
-        const transformationMatrix = Matrix.multiply(perspectiveProjectionMatrix, Matrix.multiply(viewRotMat, Matrix.multiply(viewPosMat, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))))
+        const transformationMatrix = Matrix.multiply(perspectiveProjectionMatrix, Matrix.multiply(viewPosMat, Matrix.multiply(mesh.transform.toMatrix(), this.worldMatrix)))
 
         for(var i = 0; i < mesh.vertices.length; i++)
         {
@@ -101,8 +98,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0] * ctx.canvas.width*ctx.canvas.width
-            cpos.y = position[1] * ctx.canvas.height*ctx.canvas.height
+            cpos.x = position[0]
+            cpos.y = position[1]
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)

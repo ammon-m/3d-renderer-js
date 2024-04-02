@@ -56,7 +56,7 @@ export function main(canvas)
     View.width = canvas.width
     View.height = canvas.height
 
-    ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
+    ctx.setTransform(View.width, 0, 0, View.height, 1, 1)
 
     window.addEventListener("resize", event => {
         canvas.height = Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16)
@@ -65,7 +65,7 @@ export function main(canvas)
         View.width = canvas.width
         View.height = canvas.height
 
-        ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
+        ctx.setTransform(View.width, 0, 0, View.height, 1, 1)
     }, true)
 
     window.addEventListener("mousemove", event => {
