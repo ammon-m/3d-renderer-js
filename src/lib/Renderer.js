@@ -169,14 +169,12 @@ export class Renderer
                 ctx.beginPath()
                 ctx.lineTo(cpos.x, cpos.y)
             }
-            else
+
+            if(mod(i, 3) == 2)
             {
-                if(mod(i, 3) == 2)
-                {
-                    ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`
-                    ctx.fill()
-                    ctx.closePath()
-                }
+                ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`
+                ctx.fill()
+                ctx.closePath()
             }
 
             ctx.fillStyle = `rgb(

@@ -79,7 +79,7 @@ export class Vector3
      * 
      * it is NOT normalized; the length is the square root of 3
      */
-    static get one() {return new Vector3(0, 0, 0)}
+    static get one() {return new Vector3(1, 1, 1)}
 
     /**
      * Shorthand for (0, 1, 0)
