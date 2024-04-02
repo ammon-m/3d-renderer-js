@@ -73,9 +73,15 @@ export class Renderer
             [      0,          0,          1,          0      ]
         ])
 
+        const viewMat = Matrix.Build({
+            position: this.cameraTransform.position.reversed,
+            rotation: this.cameraTransform.rotation.reversed,
+            scale: Vector3.one
+        })
+
         const transformationMatrix = Matrix.multiply(
             perspectiveProjectionMatrix,
-            Matrix.multiply(this.cameraTransform.toMatrix(),
+            Matrix.multiply(viewMat,
                 Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())
             )
         )
