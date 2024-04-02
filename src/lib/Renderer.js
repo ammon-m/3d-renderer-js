@@ -160,17 +160,16 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, pos.z, 1])
 
-            position[3] = clamp(position[3], n, f)
+            position[3] = Math.min(position[3], 0.001)
 
             cpos.x = position[0]/position[3] * ctx.canvas.width/2
             cpos.y = position[1]/position[3] * ctx.canvas.height/2
-
-            ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`
 
             if(mod(i, 3) == 0)
             {
                 ctx.beginPath()
                 ctx.moveTo(cpos.x, cpos.y)
+                ctx.fillStyle = mesh.vertices[i].color
             }
 
             ctx.lineTo(cpos.x, cpos.y)

@@ -84,11 +84,13 @@ export class Vertex
 {
     position = Vector3.zero
     screenPosition = Vector2.zero
+    color = "#111"
 
-    constructor(position)
+    constructor(position, color = "#111")
     {
         this.position = position
         this.screenPosition = new Vector2(position.x, position.y)
+        this.color = color
     }
 }
 
@@ -105,7 +107,7 @@ export function VerticesFaces(verts, faces)
         for(var j = 0; j < faces[i].length; j++)
         {
             const v = verts[faces[i][j] - 1]
-            arr.push(new Vertex(new Vector3(v[0], v[1], v[2])))
+            arr.push(new Vertex(new Vector3(v[0], v[1], v[2]), `hsl(${Math.random() * 360}, 100%, 50%)`))
         }
     }
     return arr
