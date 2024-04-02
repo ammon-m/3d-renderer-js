@@ -283,7 +283,7 @@ export class Matrix
             [        0,                0,           0,   1]
         ])
 
-        const mat = Matrix.multiply(scaleMat, Matrix.multiply(rotMat, posMat))
+        const mat = Matrix.multiply(posMat, Matrix.multiply(rotMat, scaleMat))
         return mat
     }
 

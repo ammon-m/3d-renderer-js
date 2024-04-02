@@ -74,11 +74,13 @@ export class Renderer
         ])
 
         const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).toMatrix()
-        const viewPosMat = new Transform({rotation: this.cameraTransform.position.reversed}).toMatrix()
+        const viewPosMat = new Transform({position: this.cameraTransform.position.reversed}).toMatrix()
 
         const transformationMatrix = Matrix.multiply(
             perspectiveProjectionMatrix,
-                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())
+                Matrix.multiply(viewRotMat,
+                    Matrix.multiply(viewPosMat,
+                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())))
         )
 
         for(var i = 0; i < mesh.vertices.length; i++)
