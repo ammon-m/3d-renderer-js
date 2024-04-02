@@ -9,7 +9,7 @@ export let drawTicker = null
 export const renderer = new Renderer()
 
 let mouseLocked = false
-let mouseSensitivity = 0.15
+let mouseSensitivity = 0.2
 
 const View = {
     padding: 4,
@@ -19,8 +19,6 @@ const View = {
 
 const Keyboard = {
     space: new KeyboardListener(32),
-    // z: new KeyboardListener(90),
-    // x: new KeyboardListener(88),
     w: new KeyboardListener(87),
     a: new KeyboardListener(65),
     s: new KeyboardListener(83),

@@ -98,7 +98,7 @@ export class Renderer
             const pos = mesh.vertices[i].position
             const cpos = mesh.vertices[i].screenPosition
 
-            const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
+            const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, pos.z, n, f, 1])
 
             cpos.x = position[0] * ctx.canvas.width/2
             cpos.y = position[1] * ctx.canvas.height/2
@@ -120,7 +120,7 @@ export class Renderer
             ctx.fillStyle = `rgb(
                 ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
                 ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
-                ${Math.min(255, position[2] * 255)}
+                ${Math.min(255, position[2]/f * 255)}
             )`
             ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
         }
