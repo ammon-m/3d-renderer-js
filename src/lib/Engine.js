@@ -51,6 +51,7 @@ export class Transform
             mod(this.rotation.y + rotVec.y + 180, 360) - 180,
             mod(this.rotation.z + rotVec.z + 180, 360) - 180
         )
+        return this
     }
 
     get rotationMatrix()
