@@ -78,9 +78,7 @@ export class Renderer
 
         const transformationMatrix = Matrix.multiply(
             perspectiveProjectionMatrix,
-                Matrix.multiply(viewRotMat,
-                    Matrix.multiply(viewPosMat,
-                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())))
+                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())
         )
 
         for(var i = 0; i < mesh.vertices.length; i++)
