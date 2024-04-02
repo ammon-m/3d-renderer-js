@@ -167,7 +167,7 @@ export function draw()
     _resetCtx()
 
     renderer.setCameraTransform(cameraTransform)
-    renderer.FOV = 90
+    renderer.FOV = 100
 
     renderer.render(ctx, sceneObjects)
 }

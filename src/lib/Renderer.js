@@ -160,10 +160,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, pos.z, 1])
 
-            position[2] = Math.max(position[2], n)
-
-            cpos.x = position[0]/position[2] * ctx.canvas.width/2
-            cpos.y = position[1]/position[2] * ctx.canvas.height/2
+            cpos.x = position[0] * ctx.canvas.width/2
+            cpos.y = position[1] * ctx.canvas.height/2
 
             if(mod(i, 3) == 0)
             {
