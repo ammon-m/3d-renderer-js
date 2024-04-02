@@ -87,8 +87,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0] * ctx.canvas.width/2
-            cpos.y = position[1] * ctx.canvas.height/2
+            cpos.x = position[0]/position[3] * ctx.canvas.width/2
+            cpos.y = position[1]/position[3] * ctx.canvas.height/2
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)
@@ -104,7 +104,7 @@ export class Renderer
             ctx.fillStyle = `rgb(
                 ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
                 ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
-                ${Math.min(255, position[2] * 255)}
+                ${Math.min(255, position[3] * 255)}
             )`
             ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
         }
