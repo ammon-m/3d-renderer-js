@@ -27,6 +27,9 @@ const Keyboard = {
     d: new KeyboardListener(68),
 }
 
+/**
+ * @type {CanvasRenderingContext2D}
+ */
 let ctx = null
 
 const cameraTransform = new Transform({
@@ -56,7 +59,7 @@ export function main(canvas)
     View.width = canvas.width
     View.height = canvas.height
 
-    ctx.setTransform(View.width, 0, 0, View.height, 1, 1)
+    ctx.setTransform(View.width, 0, 0, View.height, View.width/2, View.height/2)
 
     window.addEventListener("resize", event => {
         canvas.height = Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16)
@@ -65,7 +68,7 @@ export function main(canvas)
         View.width = canvas.width
         View.height = canvas.height
 
-        ctx.setTransform(View.width, 0, 0, View.height, 1, 1)
+        ctx.setTransform(View.width, 0, 0, View.height, View.width/2, View.height/2)
     }, true)
 
     window.addEventListener("mousemove", event => {
@@ -171,6 +174,7 @@ export function draw()
     _resetCtx()
 
     renderer.setCameraTransform(cameraTransform)
+    renderer.FOV = 90
 
     renderer.render(ctx, sceneObjects)
 }

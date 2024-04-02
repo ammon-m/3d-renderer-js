@@ -5,11 +5,13 @@ export class Renderer
 {
     worldMatrix = Matrix.identity
     cameraTransform = new Transform({})
+    FOV = 90
 
     constructor()
     {
         this.worldMatrix = Matrix.identity
         this.cameraTransform = new Transform({})
+        this.FOV = 90
     }
 
     /**
@@ -57,39 +59,29 @@ export class Renderer
      */
     drawMesh(ctx, mesh)
     {
-        const path = ctx.beginPath()
+        ctx.beginPath()
 
         const n = 0.01
         const f = Math.max(n, 100)
 
-        const perspectiveMatrix = new Matrix([
-                [  n,    0,    0,    0  ],
-                [  0,    n,    0,    0  ],
-                [  0,    0,   f+n, -f*n ], // tysm youtuber Brendan Galea <3
-                [  0,    0,    1,    0  ]
-        ])
+        const fov = Math.tan(degToRad(this.FOV)/2)
 
-        const b = (n * 16)/9 * Math.tan(degToRad(90)/2)
-        const r = 9/16 * b
-        const n2 = n
-        const f2 = f
-
-        const fov = Math.tan(degToRad(90)/2)
-
-        const orthoProjectionMatrix = new Matrix([ // tsym x2
-                [1/(16/9 * fov),   0,          0,          0      ],
+        const perspectiveProjectionMatrix = new Matrix([ // tsym youtuber Brendan Galea <3
+                [ 1/(16/9*fov),    0,          0,          0      ],
                 [      0,        1/fov,        0,          0      ],
-                [      0,          0,       1/(f-n),   -n/(f-n)   ],
-                [      0,          0,          0,          1      ]
+                [      0,          0,       f/(f-n), -(f*n)/(f-n) ],
+                [      0,          0,          1,          0      ]
         ])
-
-        // const perspectiveProjectionMatrix = Matrix.multiply(orthoProjectionMatrix, perspectiveMatrix)
-        const perspectiveProjectionMatrix = perspectiveMatrix
 
         const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).toMatrix()
         const viewPosMat = new Transform({rotation: this.cameraTransform.position.reversed}).toMatrix()
 
-        const transformationMatrix = Matrix.multiply(perspectiveProjectionMatrix, Matrix.multiply(viewPosMat, Matrix.multiply(mesh.transform.toMatrix(), this.worldMatrix)))
+        const transformationMatrix = Matrix.multiply(
+            perspectiveProjectionMatrix,
+                Matrix.multiply(viewRotMat,
+                    Matrix.multiply(viewPosMat,
+                        Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())))
+        )
 
         for(var i = 0; i < mesh.vertices.length; i++)
         {
@@ -98,8 +90,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0]
-            cpos.y = position[1]
+            cpos.x = position[0] * ctx.canvas.width/2
+            cpos.y = position[1] * ctx.canvas.height/2
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)
