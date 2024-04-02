@@ -26,7 +26,11 @@ export class Renderer
         }
 
         ctx.fillStyle = "#404040"
-        ctx.fillText(`${this.cameraTransform.rotation.x}, ${this.cameraTransform.rotation.y}, ${this.cameraTransform.rotation.z}`, 10, 10)
+        const _rx = Math.round(this.cameraTransform.rotation.x * 100) / 100,
+              _ry = Math.round(this.cameraTransform.rotation.y * 100) / 100,
+              _rz = Math.round(this.cameraTransform.rotation.z * 100) / 100
+
+        ctx.fillText(`${_rx}, ${_ry}, ${_rz}`, -ctx.canvas.width/2 + 10, -ctx.canvas.height/2 + 10)
 
         ctx.fillStyle = col
     }
@@ -93,8 +97,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0] * ctx.canvas.width/2
-            cpos.y = position[1] * ctx.canvas.height/2
+            cpos.x = position[0]
+            cpos.y = position[1]
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)
@@ -102,7 +106,7 @@ export class Renderer
             ctx.lineTo(cpos.x, cpos.y)
 
             ctx.fillStyle = "#404040"
-            ctx.fillText(`${pos.x}, ${pos.y}, ${pos.z}`, cpos.x, cpos.y)
+            ctx.fillText(`${Math.round(pos.x * 100)/100}, ${Math.round(pos.y * 100)/100}, ${Math.round(pos.z * 100)/100}`, cpos.x, cpos.y)
 
             ctx.fillStyle = "#111111"
             ctx.fill()
