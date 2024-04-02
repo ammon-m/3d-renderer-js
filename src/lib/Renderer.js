@@ -67,29 +67,17 @@ export class Renderer
         const fov = Math.tan(degToRad(this.FOV)/2)
 
         const perspectiveProjectionMatrix = new Matrix([ // tsym youtuber Brendan Galea <3
-                [ 1/(16/9*fov),    0,          0,          0      ],
-                [      0,        1/fov,        0,          0      ],
-                [      0,          0,       f/(f-n), -(f*n)/(f-n) ],
-                [      0,          0,          1,          0      ]
+            [ 1/(16/9*fov),    0,          0,          0      ],
+            [      0,        1/fov,        0,          0      ],
+            [      0,          0,       f/(f-n), -(f*n)/(f-n) ],
+            [      0,          0,          1,          0      ]
         ])
-
-        const viewRotMat = new Transform({
-            position: Vector3.zero,
-            rotation: this.cameraTransform.rotation.reversed,
-            scale: Vector3.one
-        }).toMatrix()
-
-        const viewPosMat = new Transform({
-            position: this.cameraTransform.position.reversed,
-            rotation: Vector3.zero,
-            scale: Vector3.one
-        }).toMatrix()
 
         const transformationMatrix = Matrix.multiply(
             perspectiveProjectionMatrix,
-                Matrix.multiply(viewRotMat,
-                    Matrix.multiply(mesh.transform.toMatrix(),
-                        Matrix.multiply(this.worldMatrix, viewPosMat)))
+            Matrix.multiply(this.cameraTransform.toMatrix(),
+                Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())
+            )
         )
 
         for(var i = 0; i < mesh.vertices.length; i++)
