@@ -69,7 +69,7 @@ export class Renderer
                 [  0,    0,    1,    0  ]
         ])
 
-        const b = (n * 16)/9 * Math.tan(degToRad(90)/2)
+        const b = (n * 16)/9 * Math.tan(degToRad(90)/2) * ctx.canvas.height
         const r = 9/16 * b
         const n2 = n
         const f2 = f
