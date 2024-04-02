@@ -101,7 +101,7 @@ export class Renderer
             ctx.fillStyle = `rgb(
                 ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
                 ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
-                ${Math.min(255, 100/w * 255)}
+                ${Math.min(255, position[2]/f)}
             )`
             ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
         }
