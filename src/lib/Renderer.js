@@ -160,7 +160,7 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, pos.z, 1])
 
-            position[3] = Math.min(position[3], 0.001)
+            position[3] = Math.max(position[3], n)
 
             cpos.x = position[0]/position[3] * ctx.canvas.width/2
             cpos.y = position[1]/position[3] * ctx.canvas.height/2
