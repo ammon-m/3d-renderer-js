@@ -153,6 +153,8 @@ export class Renderer
             )
         )
 
+        let faceCol = ""
+
         for(var i = 0; i < mesh.vertices.length; i++)
         {
             const pos = mesh.vertices[i].position
@@ -167,9 +169,10 @@ export class Renderer
             {
                 ctx.beginPath()
                 ctx.moveTo(cpos.x, cpos.y)
-                ctx.fillStyle = mesh.vertices[i].color
+                faceCol = mesh.vertices[i].color
             }
 
+            ctx.fillStyle = faceCol
             ctx.lineTo(cpos.x, cpos.y)
 
             if(mod(i, 3) == 2)

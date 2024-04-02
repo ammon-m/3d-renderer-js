@@ -21,7 +21,7 @@ export class KeyboardListener
         if (event.key === this.value || event.keyCode == this.value) {
             if(this.isUp) {
                 this.press();
-                this.pressed = !paused;
+                this.pressed = true;
             }
             this.isDown = true;
             this.isUp = false;
@@ -34,7 +34,7 @@ export class KeyboardListener
         if (event.key === this.value || event.keyCode == this.value) {
             if(this.isDown) {
                 this.release();
-                this.released = !paused;
+                this.released = true;
             }
             this.isDown = false;
             this.isUp = true;

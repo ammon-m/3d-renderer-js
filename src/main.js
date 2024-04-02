@@ -53,8 +53,8 @@ export function main(canvas)
     clearInterval(drawTicker)
     drawTicker = null
 
-    canvas.height = Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16)
-    canvas.width = canvas.height * 16/9
+    canvas.height = Math.round(Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16))
+    canvas.width = Math.round(canvas.height * 16/9)
 
     View.width = canvas.width
     View.height = canvas.height
@@ -62,8 +62,8 @@ export function main(canvas)
     ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
 
     window.addEventListener("resize", event => {
-        canvas.height = Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16)
-        canvas.width = canvas.height * 16/9
+        canvas.height = Math.round(Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16))
+        canvas.width = Math.round(canvas.height * 16/9)
 
         View.width = canvas.width
         View.height = canvas.height
