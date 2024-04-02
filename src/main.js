@@ -1,4 +1,4 @@
-import { Mesh, Transform, Vertex } from "./lib/Engine.js";
+import { Mesh, Transform, Vertex, VerticesFaces } from "./lib/Engine.js";
 import { KeyboardListener } from "./lib/Input.js";
 import { Vector2, Vector3, clamp } from "./lib/Math3d.js";
 import { Renderer } from "./lib/Renderer.js";
@@ -104,59 +104,52 @@ function _resetCtx()
 let elapsedTime = 0
 
 const sceneObjects = [
-    new Mesh(
+    new Mesh(1,
+    VerticesFaces(
         [
-            new Vertex(new Vector3(0, 0, 1)),
-            new Vertex(new Vector3(1, 0, 1)),
-            new Vertex(new Vector3(1, 0, 0)),
-            new Vertex(new Vector3(0, 0, 0))
+            [-0.5, -0.5, -0.5 ],
+            [-0.5,  0.5, -0.5 ],
+            [ 0.5,  0.5, -0.5 ],
+            [ 0.5, -0.5, -0.5 ],
+            [-0.5, -0.5,  0.5 ],
+            [-0.5,  0.5,  0.5 ],
+            [ 0.5,  0.5,  0.5 ],
+            [ 0.5, -0.5,  0.5 ]
         ],
-        new Transform({
-            position: new Vector3(0.5, 0.5, 1),
-            rotation: new Vector3(0, 0, 0),
-            scale: new Vector3(1, 1, 1)
-        })
+        [
+            [3, 7, 8],
+            [3, 8, 4],
+            [1, 5, 6],
+            [1, 6, 2],
+            [7, 3, 2],
+            [7, 2, 6],
+            [4, 8, 5],
+            [4, 5, 1],
+            [8, 7, 6],
+            [8, 6, 5],
+            [3, 4, 1],
+            [3, 1, 2]
+        ]
     ),
-    new Mesh(
-        [
-            new Vertex(new Vector3(0, 0, 1)),
-            new Vertex(new Vector3(1, 0, 1)),
-            new Vertex(new Vector3(1, 0, 0)),
-            new Vertex(new Vector3(0, 0, 0))
-        ],
-        new Transform({
-            position: new Vector3(0.5, 0.5, 1),
-            rotation: new Vector3(0, 0, 90),
-            scale: new Vector3(1, 1, 1)
-        })
-    ),
-    new Mesh(
-        [
-            new Vertex(new Vector3(0, 0, 1)),
-            new Vertex(new Vector3(1, 0, 1)),
-            new Vertex(new Vector3(1, 0, 0)),
-            new Vertex(new Vector3(0, 0, 0))
-        ],
-        new Transform({
-            position: new Vector3(0.5, 0.5, 1),
-            rotation: new Vector3(-90, 0, 0),
-            scale: new Vector3(1, 1, 1)
-        })
-    )
+    new Transform({
+        position: new Vector3(0.5, 0.5, 1),
+        rotation: Vector3.zero,
+        scale: Vector3.one
+    }))
 ]
 
 export function update()
 {
-    const cubeFaces = [sceneObjects[0], sceneObjects[1], sceneObjects[2]]
+    // const cubeFaces = [sceneObjects[0], sceneObjects[1], sceneObjects[2]]
 
-    cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    cubeFaces[0].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
+    // cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    // cubeFaces[0].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
 
-    cubeFaces[1].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    cubeFaces[1].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
+    // cubeFaces[1].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    // cubeFaces[1].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
 
-    cubeFaces[2].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    cubeFaces[2].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
+    // cubeFaces[2].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
+    // cubeFaces[2].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
 
     cameraTransform.position.add(cameraVelocity)
 

@@ -1,5 +1,5 @@
 import { Mesh, Transform } from "./Engine.js"
-import { Matrix, Vector3, clamp, degToRad } from "./Math3d.js"
+import { Matrix, Vector3, clamp, degToRad, mod } from "./Math3d.js"
 
 export class Renderer
 {
@@ -59,6 +59,19 @@ export class Renderer
      */
     drawMesh(ctx, mesh)
     {
+        switch(mesh.format)
+        {
+            case 0: this.drawMeshTriangleStrip(ctx, mesh); break;
+            case 1: default: this.drawMeshTriangleList(ctx, mesh); break;
+        }
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Mesh} mesh
+     */
+    drawMeshTriangleStrip(ctx, mesh)
+    {
         ctx.beginPath()
 
         const n = 0.01
@@ -98,8 +111,11 @@ export class Renderer
             ctx.fillStyle = "#404040"
             ctx.fillText(`${Math.round(pos.x * 100)/100}, ${Math.round(pos.y * 100)/100}, ${Math.round(pos.z * 100)/100}`, cpos.x, cpos.y)
 
-            ctx.fillStyle = "#111111"
-            ctx.fill()
+            if(i > 1)
+            {
+                ctx.fillStyle = "#111111"
+                ctx.fill()
+            }
 
             ctx.fillStyle = `rgb(
                 ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
@@ -110,5 +126,69 @@ export class Renderer
         }
 
         ctx.closePath()
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Mesh} mesh
+     */
+    drawMeshTriangleList(ctx, mesh)
+    {
+        const n = 0.01
+        const f = Math.max(n, 100)
+
+        const fov = Math.tan(degToRad(this.FOV)/2)
+
+        const perspectiveProjectionMatrix = new Matrix([ // tsym youtuber Brendan Galea <3
+            [ 1/(16/9*fov),    0,          0,          0      ],
+            [      0,        1/fov,        0,          0      ],
+            [      0,          0,       f/(f-n), -(f*n)/(f-n) ],
+            [      0,          0,          1,          0      ]
+        ])
+
+        const transformationMatrix = Matrix.multiply(
+            perspectiveProjectionMatrix,
+            Matrix.multiply(this.cameraTransform.toMatrix(),
+                Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix())
+            )
+        )
+
+        for(var i = 0; i < mesh.vertices.length; i++)
+        {
+            const pos = mesh.vertices[i].position
+            const cpos = mesh.vertices[i].screenPosition
+
+            const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
+
+            cpos.x = position[0] * ctx.canvas.width/2
+            cpos.y = position[1] * ctx.canvas.height/2
+
+            if(mod(i, 3) == 0)
+            {
+                ctx.beginPath()
+                ctx.moveTo(cpos.x, cpos.y)
+            }
+            else
+            {
+                ctx.lineTo(cpos.x, cpos.y)
+
+                if(mod(i, 3) == 2)
+                {
+                    ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 50%)`
+                    ctx.fill()
+                    ctx.closePath()
+                }
+            }
+
+            ctx.fillStyle = `rgb(
+                ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
+                ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
+                ${Math.min(255, position[2] * 255)}
+            )`
+            ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
+
+            ctx.fillStyle = "#404040"
+            ctx.fillText(`${Math.round(pos.x * 100)/100}, ${Math.round(pos.y * 100)/100}, ${Math.round(pos.z * 100)/100}`, cpos.x, cpos.y)
+        }
     }
 }

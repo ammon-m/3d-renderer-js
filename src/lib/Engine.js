@@ -92,15 +92,36 @@ export class Vertex
     }
 }
 
+/**
+ * constructs an array of Vertices from sets of positions
+ * @param {number[][]} verts
+ * @param {number[][]} faces
+ */
+export function VerticesFaces(verts, faces)
+{
+    const arr = []
+    for(var i = 0; i < faces.length; i++)
+    {
+        for(var j = 0; j < faces[i].length; j++)
+        {
+            const v = verts[faces[i][j] - 1]
+            arr.push(new Vertex(new Vector3(v[0], v[1], v[2])))
+        }
+    }
+    return arr
+}
+
 export class Mesh
 {
     /**
+     * @param {number} format 0: trianglestrip, 1: trianglelist
      * @param {Vertex[]} vertices 
      * @param {Transform} transform 
      * @param {string} color 
      */
-    constructor(vertices, transform, color = "#ffffff")
+    constructor(format, vertices, transform, color = "#ffffff")
     {
+        this.format = format
         this.vertices = vertices
         this.transform = transform
         this.color = color
