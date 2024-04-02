@@ -89,7 +89,7 @@ export class Renderer
             perspectiveProjectionMatrix,
                 Matrix.multiply(mesh.transform.toMatrix(),
                     Matrix.multiply(this.worldMatrix,
-                        Matrix.multiply(viewPosMat, viewRotMat)))
+                        Matrix.multiply(viewRotMat, viewPosMat)))
         )
 
         for(var i = 0; i < mesh.vertices.length; i++)
