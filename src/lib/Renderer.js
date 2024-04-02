@@ -97,8 +97,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0]
-            cpos.y = position[1]
+            cpos.x = position[0] * ctx.canvas.width*ctx.canvas.width
+            cpos.y = position[1] * ctx.canvas.height*ctx.canvas.height
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)
