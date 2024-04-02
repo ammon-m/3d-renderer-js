@@ -162,8 +162,8 @@ export class Renderer
 
             position[3] = Math.max(position[3], n)
 
-            cpos.x = position[0]/position[3] * ctx.canvas.width/2
-            cpos.y = position[1]/position[3] * ctx.canvas.height/2
+            cpos.x = position[0]/position[2] * ctx.canvas.width/2
+            cpos.y = position[1]/position[2] * ctx.canvas.height/2
 
             if(mod(i, 3) == 0)
             {
