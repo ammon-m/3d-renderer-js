@@ -69,21 +69,25 @@ export class Renderer
                 [  0,    0,    1,    0  ]
         ])
 
-        const b = (n * 16)/9 * Math.tan(degToRad(90)/2) * ctx.canvas.height
+        const b = (n * 16)/9 * Math.tan(degToRad(90)/2)
         const r = 9/16 * b
         const n2 = n
         const f2 = f
 
         const fov = Math.tan(degToRad(90)/2)
 
+        const w = ctx.canvas.width / 2
+        const h = ctx.canvas.height / 2
+
         const orthoProjectionMatrix = new Matrix([ // tsym x2
-                [1/(16/9 * fov),   0,          0,          0      ],
-                [      0,        1/fov,        0,          0      ],
+                [w/(16/9 * fov),   0,          0,          0      ],
+                [      0,        h/fov,        0,          0      ],
                 [      0,          0,      1/(f2-n2), -n2/(f2-n2) ],
                 [      0,          0,          0,          1      ]
         ])
 
         const perspectiveProjectionMatrix = Matrix.multiply(orthoProjectionMatrix, perspectiveMatrix)
+        // const perspectiveProjectionMatrix = orthoProjectionMatrix
 
         const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).toMatrix()
         const viewPosMat = new Transform({rotation: this.cameraTransform.position.reversed}).toMatrix()
