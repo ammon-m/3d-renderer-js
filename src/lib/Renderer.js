@@ -18,10 +18,17 @@ export class Renderer
      */
     render(ctx, objects)
     {
+        const col = ctx.fillStyle
+
         for(var i = 0; i < objects.length; i++)
         {
             this.drawMesh(ctx, objects[i])
         }
+
+        ctx.fillStyle = "#404040"
+        ctx.fillText(`${this.cameraTransform.rotation.x}, ${this.cameraTransform.rotation.y}, ${this.cameraTransform.rotation.z}`, 10, 10)
+
+        ctx.fillStyle = col
     }
 
     /**
@@ -47,7 +54,6 @@ export class Renderer
     drawMesh(ctx, mesh)
     {
         const path = ctx.beginPath()
-        const col = ctx.fillStyle
 
         const n = 0.01
         const f = Math.max(n, 100)
@@ -95,6 +101,9 @@ export class Renderer
 
             ctx.lineTo(cpos.x, cpos.y)
 
+            ctx.fillStyle = "#404040"
+            ctx.fillText(`${pos.x}, ${pos.y}, ${pos.z}`, cpos.x, cpos.y)
+
             ctx.fillStyle = "#111111"
             ctx.fill()
 
@@ -107,7 +116,5 @@ export class Renderer
         }
 
         ctx.closePath()
-
-        ctx.fillStyle = col
     }
 }
