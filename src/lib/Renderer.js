@@ -75,7 +75,7 @@ export class Renderer
 
         const perspectiveProjectionMatrix = Matrix.multiply(orthoProjectionMatrix, perspectiveMatrix)
 
-        const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).Rotate(new Vector3(180, 180, 180)).toMatrix()
+        const viewRotMat = new Transform({rotation: this.cameraTransform.rotation.reversed}).toMatrix()
         const viewPosMat = new Transform({rotation: this.cameraTransform.position.reversed}).toMatrix()
 
         const transformationMatrix = Matrix.multiply(perspectiveProjectionMatrix, Matrix.multiply(viewRotMat, Matrix.multiply(viewPosMat, Matrix.multiply(this.worldMatrix, mesh.transform.toMatrix()))))
@@ -87,8 +87,8 @@ export class Renderer
 
             const position = Matrix.multiplyToColumn(transformationMatrix, [pos.x, pos.y, clamp(pos.z, n, f), 1])
 
-            cpos.x = position[0] * ctx.canvas.width
-            cpos.y = position[1] * ctx.canvas.height
+            cpos.x = position[0] * ctx.canvas.width/2
+            cpos.y = position[1] * ctx.canvas.height/2
 
             if(i == 0)
                 ctx.moveTo(cpos.x, cpos.y)
@@ -101,7 +101,7 @@ export class Renderer
             ctx.fillStyle = `rgb(
                 ${Math.min(255, cpos.x / (ctx.canvas.width + 8) * 255)},
                 ${Math.min(255, cpos.y / (ctx.canvas.height + 8) * 255)},
-                ${Math.min(255, position[2]/f)}
+                ${Math.min(255, position[2] * 255)}
             )`
             ctx.fillRect(cpos.x - 4, cpos.y - 4, 8, 8)
         }
