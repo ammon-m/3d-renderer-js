@@ -193,3 +193,8 @@ export class Renderer
         }
     }
 }
+
+export class RendererGL
+{
+    
+}

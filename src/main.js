@@ -1,12 +1,20 @@
 import { Mesh, Transform, Vertex, VerticesFaces } from "./lib/Engine.js";
 import { KeyboardListener } from "./lib/Input.js";
 import { Vector2, Vector3, clamp } from "./lib/Math3d.js";
-import { Renderer } from "./lib/Renderer.js";
+import { Renderer, RendererGL } from "./lib/Renderer.js";
+import { Enum } from "./lib/util.js";
 
 export let ticker = null
 export let drawTicker = null
 
 export const renderer = new Renderer()
+export const renderer3D = new RendererGL()
+
+const RendererMode = Enum({
+    Canvas2D: 0,
+    WebGL: 1
+})
+let mode = RendererMode.Canvas2D
 
 let mouseLocked = false
 let mouseSensitivity = 0.2
@@ -33,7 +41,7 @@ let ctx = null
 const cameraTransform = new Transform({
     position: Vector3.zero,
     rotation: Vector3.zero,
-    scale: new Vector3(1, 1, 1)
+    scale: Vector3.one
 })
 const cameraVelocity = Vector3.zero
 let cameraPitch = 0
@@ -44,8 +52,6 @@ let cameraYaw = 0
 */
 export function main(canvas)
 {
-    ctx = canvas.getContext("2d")
-
     clearInterval(ticker)
     ticker = null
     clearInterval(drawTicker)
@@ -57,7 +63,20 @@ export function main(canvas)
     View.width = canvas.width
     View.height = canvas.height
 
-    ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+    switch(mode)
+    {
+        case RendererMode.Canvas2D: default:
+        {
+            ctx = canvas.getContext("2d")
+            ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+            break;
+        }
+        case RendererMode.WebGL:
+        {
+            ctx = canvas.getContext("webgl")
+            break;
+        }
+    }
 
     window.addEventListener("resize", event => {
         canvas.height = Math.round(Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16))
@@ -66,7 +85,7 @@ export function main(canvas)
         View.width = canvas.width
         View.height = canvas.height
 
-        ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+        if(mode == RendererMode.Canvas2D) ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
     }, true)
 
     window.addEventListener("mousemove", event => {
@@ -96,7 +115,19 @@ export function main(canvas)
 function _resetCtx()
 {
     ctx.reset()
-    ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
+
+    switch(mode)
+    {
+        case RendererMode.Canvas2D: default:
+        {
+            ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
+            break;
+        }
+        case RendererMode.WebGL:
+        {
+            break;
+        }
+    }
 }
 
 let elapsedTime = 0
@@ -164,8 +195,19 @@ export function draw()
 {
     _resetCtx()
 
-    renderer.setCameraTransform(cameraTransform)
-    renderer.FOV = 100
+    switch(mode)
+    {
+        case RendererMode.Canvas2D: default:
+        {
+            renderer.setCameraTransform(cameraTransform)
+            renderer.FOV = 100
 
-    renderer.render(ctx, sceneObjects)
+            renderer.render(ctx, sceneObjects)
+            break;
+        }
+        case RendererMode.WebGL:
+        {
+            break;
+        }
+    }
 }
