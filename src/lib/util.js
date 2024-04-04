@@ -1,5 +1,5 @@
 /**
- * @template {{[x: string]: number | undefined}} T
+ * @template T
  * @param {T} obj
  * @returns {Readonly<{[P in keyof T]: symbol}>}
  */

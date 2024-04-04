@@ -1,7 +1,8 @@
 import { Mesh, Transform, Vertex, VerticesFaces } from "./lib/Engine.js";
 import { KeyboardListener } from "./lib/Input.js";
 import { Vector2, Vector3, clamp } from "./lib/Math3d.js";
-import { Renderer, RendererGL } from "./lib/Renderer.js";
+import { Renderer } from "./lib/Renderer.js";
+import RendererGL from "./lib/RendererGL.js";
 import { Enum } from "./lib/util.js";
 
 export let ticker = null
@@ -19,7 +20,7 @@ let mode = RendererMode.Canvas2D
 let mouseLocked = false
 let mouseSensitivity = 0.2
 
-const View = {
+export const View = {
     padding: 4,
     width: 0,
     height: 0
@@ -37,6 +38,10 @@ const Keyboard = {
  * @type {CanvasRenderingContext2D}
  */
 let ctx = null
+/**
+ * @type {WebGL2RenderingContext}
+ */
+let gl = null
 
 const cameraTransform = new Transform({
     position: Vector3.zero,
@@ -48,8 +53,8 @@ let cameraPitch = 0
 let cameraYaw = 0
 
 /**
-* @param {HTMLCanvasElement} canvas
-*/
+ * @param {HTMLCanvasElement} canvas
+ */
 export function main(canvas)
 {
     clearInterval(ticker)
@@ -63,21 +68,6 @@ export function main(canvas)
     View.width = canvas.width
     View.height = canvas.height
 
-    switch(mode)
-    {
-        case RendererMode.Canvas2D: default:
-        {
-            ctx = canvas.getContext("2d")
-            ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
-            break;
-        }
-        case RendererMode.WebGL:
-        {
-            ctx = canvas.getContext("webgl")
-            break;
-        }
-    }
-
     window.addEventListener("resize", event => {
         canvas.height = Math.round(Math.min(window.innerHeight - View.padding * 2, (window.innerWidth - View.padding * 2) * 9/16))
         canvas.width = Math.round(canvas.height * 16/9)
@@ -85,7 +75,8 @@ export function main(canvas)
         View.width = canvas.width
         View.height = canvas.height
 
-        if(mode == RendererMode.Canvas2D) ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+        if(mode == RendererMode.Canvas2D)
+            ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
     }, true)
 
     window.addEventListener("mousemove", event => {
@@ -109,7 +100,30 @@ export function main(canvas)
     ticker = setInterval(update, 1/60 * 1000) // 1/60s = ~16.67ms
     drawTicker = setInterval(draw, 10/1000) // supposedly chrome's limit is 10ms
 
-    return 1
+    switch(mode)
+    {
+        case RendererMode.Canvas2D: default:
+        {
+            ctx = canvas.getContext("2d")
+            ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+            return 1
+        }
+        case RendererMode.WebGL:
+        {
+            gl = canvas.getContext("webgl2")
+
+            if(!gl)
+            {
+                console.error(new Error("WebGL2 is unavailable! switching to Canvas2D"))
+                ctx = canvas.getContext("2d")
+                ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
+                return 3
+            }
+
+            ctx = gl
+            return 1
+        }
+    }
 }
 
 function _resetCtx()
