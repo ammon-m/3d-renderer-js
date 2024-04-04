@@ -1,4 +1,4 @@
-import { Enum } from "../lib/util";
+import { Enum } from "../lib/util.js";
 
 let _export = {
     /**
