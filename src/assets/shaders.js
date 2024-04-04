@@ -1,6 +1,6 @@
 import { Enum } from "../lib/util.js";
 
-let _export = {
+const _export = {
     /**
      * @description retrieve a vertex or fragment shader string
      * 
@@ -88,12 +88,6 @@ export class ShaderCompilerError extends Error
     }
 }
 
-_export.compileAllShaders().then(() => { // success
-    
-}, (reason) => { // error
-    console.error(reason)
-})
-
 export default _export
 
 const Vertex = {
@@ -136,3 +130,5 @@ const Fragment = {
 
     }`
 }
+
+
