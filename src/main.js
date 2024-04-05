@@ -9,7 +9,7 @@ export let ticker = null
 export let drawTicker = null
 
 export const renderer = new Renderer()
-export const renderer3D = new RendererGL()
+export let renderer3D = null
 
 const RendererMode = Enum({
     Canvas2D: 0,
@@ -106,7 +106,7 @@ export function main(canvas)
         {
             ctx = canvas.getContext("2d")
             ctx.setTransform(1, 0, 0, 1, View.width/2, View.height/2)
-            return 1
+            break;
         }
         case RendererMode.WebGL:
         {
@@ -121,9 +121,12 @@ export function main(canvas)
             }
 
             ctx = gl
-            return 1
+
+            renderer3D = new RendererGL(gl)
+            break;
         }
     }
+    return 1
 }
 
 function _resetCtx()
