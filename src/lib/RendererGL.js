@@ -6,27 +6,39 @@ export default class RendererGL
      * @private
      * @type {WebGL2RenderingContext}
      */
-    gl = null;
+    gl = null
+
+    programs = {
+        base: null,
+        lit: null
+    }
 
     ready = false
-
-    fallbackProgram = null
 
     constructor(ctx)
     {
         this.gl = ctx;
         this.sh = new ShaderCompiler(this.gl)
-
-        this.init()
     }
 
-    /**
-     * @private
-     */
     init()
     {
         this.sh.compileAllShaders()
 
-        this.fallbackProgram = ShaderCompiler.createProgram(this.gl, this.sh.get("v/base"), this.sh.get("f/base"))
+        const _programs = ["base", "lit"]
+
+        for(const shader of _programs)
+        {
+            this.programs.base = ShaderCompiler.createProgram(this.gl, this.sh.get("v/base"), this.sh.get("f/base"))
+        }
+
+        this.ready = true
+    }
+
+    main()
+    {
+        if(!this.ready) return;
+
+        
     }
 }

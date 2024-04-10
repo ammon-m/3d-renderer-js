@@ -9,13 +9,14 @@ export let ticker = null
 export let drawTicker = null
 
 export const renderer = new Renderer()
+/** @type {RendererGL} */
 export let renderer3D = null
 
 const RendererMode = Enum({
     Canvas2D: 0,
     WebGL: 1
 })
-let mode = RendererMode.Canvas2D
+let mode = RendererMode.WebGL
 
 let mouseLocked = false
 let mouseSensitivity = 0.2
@@ -131,17 +132,18 @@ export function main(canvas)
 
 function _resetCtx()
 {
-    ctx.reset()
-
     switch(mode)
     {
         case RendererMode.Canvas2D: default:
         {
+            ctx.reset()
             ctx.setTransform(1, 0, 0, 1, View.width / 2, View.height / 2)
             break;
         }
         case RendererMode.WebGL:
         {
+            gl.clearColor(0, 0, 0, 0)
+            gl.clear(gl.COLOR_BUFFER_BIT);
             break;
         }
     }
@@ -186,17 +188,6 @@ const sceneObjects = [
 
 export function update()
 {
-    // const cubeFaces = [sceneObjects[0], sceneObjects[1], sceneObjects[2]]
-
-    // cubeFaces[0].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    // cubeFaces[0].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
-
-    // cubeFaces[1].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    // cubeFaces[1].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
-
-    // cubeFaces[2].transform.position.x = 0.5 + Math.cos((elapsedTime / 120) * Math.PI)
-    // cubeFaces[2].transform.position.y = 0.5 + Math.sin((elapsedTime / 120) * Math.PI)
-
     cameraTransform.position.add(cameraVelocity)
 
     for(let key in Keyboard)
@@ -224,6 +215,7 @@ export function draw()
         }
         case RendererMode.WebGL:
         {
+            renderer3D.main()
             break;
         }
     }
